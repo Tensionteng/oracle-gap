@@ -1,0 +1,18 @@
+{
+ "model": "moirai11_large",
+ "dataset": "bizitobs_application",
+ "status": "ok",
+ "n_windows": 40,
+ "mse": 1034.965671709095,
+ "mae": 10.812112506294287,
+ "under_rate": 0.403125,
+ "over_rate": 0.27395833333333336,
+ "wrong_rate": 0.3229166666666667,
+ "amp_base": 0.867460615753547,
+ "amp_oracle": 0.9325907879127987,
+ "gap": 0.06513017215925165,
+ "ci95_lo": 0.045220326631122916,
+ "ci95_hi": 0.0850400176873804,
+ "notes": "multi_window",
+ "seconds": 0.07
+}

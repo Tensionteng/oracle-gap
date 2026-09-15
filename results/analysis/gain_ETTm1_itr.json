@@ -1,0 +1,96 @@
+{
+  "setting": "ETTm1_itr",
+  "base_dir": "results/long_term_forecast_ETTm1_96_96_iTransformer_ETTm1_ftM_sl96_ll48_pl96_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0",
+  "desc_dir": "pred_dumps/long_term_forecast_ETTm1_96_96_descw01_iTransformerDesc_ETTm1_ftM_sl96_ll48_pl96_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_descw01_0",
+  "stats": "descriptor_cache/ETTm1_pl96.npz",
+  "notes": [],
+  "n_windows": 11425,
+  "by_cusum_score": [
+    {
+      "group": 0,
+      "n": 2335,
+      "mse_base": 0.29696561599721333,
+      "mse_desc": 0.29945574373537065,
+      "rel_gain": -0.00838523924662271
+    },
+    {
+      "group": 1,
+      "n": 2418,
+      "mse_base": 0.32944140674865197,
+      "mse_desc": 0.3325174269552685,
+      "rel_gain": -0.00933707828950406
+    },
+    {
+      "group": 2,
+      "n": 2217,
+      "mse_base": 0.3280258041847298,
+      "mse_desc": 0.33336637081849163,
+      "rel_gain": -0.016280934504635
+    },
+    {
+      "group": 3,
+      "n": 2331,
+      "mse_base": 0.3465158435413329,
+      "mse_desc": 0.3526867575211726,
+      "rel_gain": -0.017808461271998473
+    },
+    {
+      "group": 4,
+      "n": 2124,
+      "mse_base": 0.4115767481925926,
+      "mse_desc": 0.4171651952528175,
+      "rel_gain": -0.013578140856513661
+    },
+    {
+      "group": "all",
+      "n": 11425,
+      "mse_base": 0.34128268596982,
+      "mse_desc": 0.34577691471364225,
+      "rel_gain": -0.013168639748163785
+    }
+  ],
+  "by_drift_bin": [
+    {
+      "group": 0,
+      "n": 1579,
+      "mse_base": 0.4409355007584547,
+      "mse_desc": 0.4585811663020933,
+      "rel_gain": -0.040018700044079425
+    },
+    {
+      "group": 1,
+      "n": 2395,
+      "mse_base": 0.3158609726767145,
+      "mse_desc": 0.317251781768884,
+      "rel_gain": -0.004403231840842343
+    },
+    {
+      "group": 2,
+      "n": 3573,
+      "mse_base": 0.3015926962380924,
+      "mse_desc": 0.3045874015879552,
+      "rel_gain": -0.009929634859256263
+    },
+    {
+      "group": 3,
+      "n": 2115,
+      "mse_base": 0.32611958199753865,
+      "mse_desc": 0.32820650150731306,
+      "rel_gain": -0.006399246242717681
+    },
+    {
+      "group": 4,
+      "n": 1763,
+      "mse_base": 0.38519392079600867,
+      "mse_desc": 0.3880522036949229,
+      "rel_gain": -0.00742037385483013
+    },
+    {
+      "group": "all",
+      "n": 11425,
+      "mse_base": 0.34128268596982,
+      "mse_desc": 0.34577691471364225,
+      "rel_gain": -0.013168639748163785
+    }
+  ]
+}

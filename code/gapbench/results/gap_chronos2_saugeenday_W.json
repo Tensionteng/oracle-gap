@@ -1,0 +1,18 @@
+{
+ "model": "chronos2",
+ "dataset": "saugeenday/W",
+ "status": "ok",
+ "n_windows": 20,
+ "mse": 1.4680294215132426,
+ "mae": 0.6331937300612256,
+ "under_rate": 0.3703125,
+ "over_rate": 0.29375,
+ "wrong_rate": 0.3359375,
+ "amp_base": 0.31510327364382695,
+ "amp_oracle": 0.3078507237265039,
+ "gap": -0.007252549917323048,
+ "ci95_lo": -0.009199999314368271,
+ "ci95_hi": -0.005305100520277824,
+ "notes": "multi_window",
+ "seconds": 0.03
+}

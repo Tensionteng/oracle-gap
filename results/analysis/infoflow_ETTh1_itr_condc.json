@@ -1,0 +1,15 @@
+{
+  "setting": "ETTh1_itr_condc",
+  "model": "iTransformer",
+  "data": "ETTh1",
+  "desc_cond": "concat",
+  "desc_mode": "pooled",
+  "ckpt": "checkpoints/long_term_forecast_ETTh1_96_96_condc_iTransformerDesc_ETTh1_ftM_sl96_ll48_pl96_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_condc_0/checkpoint.pth",
+  "n_windows": 2785,
+  "mse_clean": 0.3967501223087311,
+  "mse_zero": 0.4038550853729248,
+  "mse_perm": 0.3975406289100647,
+  "delta_zero": 0.007104963064193726,
+  "delta_perm": 0.0007905066013336182,
+  "delta_perm_rel": 0.001992454519495368
+}

@@ -1,0 +1,15 @@
+{
+  "setting": "ETTm1_patch_condc1",
+  "model": "PatchTST",
+  "data": "ETTm1",
+  "desc_cond": "concat",
+  "desc_mode": "pooled",
+  "ckpt": "checkpoints/long_term_forecast_ETTm1_96_96_condc1_PatchSTDesc_ETTm1_ftM_sl96_ll48_pl96_dm512_nh2_el1_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_condc1_0/checkpoint.pth",
+  "n_windows": 11425,
+  "mse_clean": 0.32867157459259033,
+  "mse_zero": 0.33907651901245117,
+  "mse_perm": 0.33649784326553345,
+  "delta_zero": 0.01040494441986084,
+  "delta_perm": 0.007826268672943115,
+  "delta_perm_rel": 0.02381182089447975
+}

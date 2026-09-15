@@ -1,0 +1,25 @@
+\section{When Smoothness Is Rational: Descriptor-Driven Selective Prediction}
+\label{sec:decision}
+
+\subsection{A free auxiliary signal}
+
+Where the oracle gap is non-positive, over-smoothing cannot be repaired, but the model can still report when its forecast is likely to degrade. We attach a shallow head (21K parameters, under 1\% of the backbone's parameter count) to the last hidden state of the forecaster, and train it jointly to predict a set of structural descriptors of the future window: the probability and position of an imminent change point, ordinal bins of drift, volatility, and trend slope, and a five-dimensional spectral summary. All labels are computed from the future window at training time and cost no annotation.
+
+\subsection{Descriptor supervision does not repair point accuracy at small scale}
+
+The head improves point MSE only marginally and only in specific cells: at best about one percent on PatchTST on ETTm1, with no reliable gain on iTransformer, on longer horizons, or on high-dimensional series, and a slight negative effect when fine-tuning a 48M foundation model. Mechanism analysis shows why: the auxiliary gradient is nine to twenty-five times larger than the task gradient at equal weight, so only a small weight is usable, and the gain concentrates in change-point-rich windows, where it reaches 2.8\%. This matches scale-dependent reports for multi-token prediction \citep{gloeckle2024mtp,mutor} and our theory: most windows in these datasets are in the rational-shrinkage regime, so representation shaping has little bias to remove.
+
+\subsection{The descriptor output is a reliable forward-looking risk signal}
+
+Although the head does not improve the forecast, its change-point output predicts the forecast's error. Ranking test windows by predicted change-point probability and abstaining on the top quintile reduces the remaining MSE by 2.7\% on ETTh1 and 5.3\% on ETTm1. The signal outperforms three natural baselines: random ranking ($+0.2\%$), ranking by context volatility ($+0.4\%$ and $+1.2\%$, actively harmful), and, notably, ranking by the true change-point label computed from the realized future ($-1.6\%$ and $-4.5\%$). The head's smoothed probabilities rank windows more reliably than the noisy realized labels, which suggests it has learned a generalizable structural signal rather than memorized targets. Figure~\ref{fig:riskcov} shows the full risk-coverage curves.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_riskcov.pdf}
+  \caption{Risk-coverage curves on ETTh1 and ETTm1. Ranking windows by predicted change-point probability (blue) reduces remaining MSE monotonically and outperforms oracle change-point ranking (gray), context volatility (red), and random ranking (dashed). The oracle volatility ranking (black) marks the exploitable upper bound.}
+  \label{fig:riskcov}
+\end{figure}
+
+\section{Scope}
+
+Two scope notes bound the claim. First, the working signal is the change-point probability; the predicted volatility bin ranks poorly, even though the oracle volatility ranking marks a much larger upper bound of $7$ to $10\%$. Closing this gap is a labeling and head-design problem we leave open. Second, the signal is forward-looking: it cannot be recovered from static context statistics, as the context-volatility baseline shows. The descriptor head is best understood as an auxiliary sensory organ for forecast-time decisions, not as an accuracy device, a division of labor predicted by the two-component theory.

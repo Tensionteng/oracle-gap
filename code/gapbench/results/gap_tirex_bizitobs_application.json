@@ -1,0 +1,18 @@
+{
+ "model": "tirex",
+ "dataset": "bizitobs_application",
+ "status": "ok",
+ "n_windows": 40,
+ "mse": 1035.5176688122133,
+ "mae": 10.606731761739505,
+ "under_rate": 0.5315104166666667,
+ "over_rate": 0.17994791666666668,
+ "wrong_rate": 0.28854166666666664,
+ "amp_base": 0.8641652637059649,
+ "amp_oracle": 0.9325091465329713,
+ "gap": 0.06834388282700643,
+ "ci95_lo": 0.048618983279104674,
+ "ci95_hi": 0.08806878237490819,
+ "notes": "multi_window",
+ "seconds": 0.94
+}

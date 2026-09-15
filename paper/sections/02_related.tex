@@ -1,0 +1,13 @@
+\section{Related Work}
+
+\paragraph{Over-smoothing and loss design in forecasting.}
+Squared-error training shrinks forecasts toward conditional means, and several works repair the resulting smoothness. FreDF trains in the frequency domain to decorrelate label-autocorrelation bias \citep{fredf}, with follow-ups on learnable or orthogonalized transform domains \citep{transdf,olinear,fredn}. HCAN attaches hierarchical classification over binned amplitudes to preserve high-entropy features \citep{hcan}, and DILATE penalizes shape and temporal distortion directly \citep{dilate}. Asymmetric losses \citep{newey1987expectile,zellner1986linex} penalize over- and under-prediction differently, and focal weighting schemes up-weight hard examples in imbalanced prediction problems \citep{focal_loss,lds_fds}. These methods intervene unconditionally; we instead characterize when repair is possible at all. \rf~is closest to this reweighting family, but its weights are conditioned on the prediction's position relative to a level reference and the realization, targeting under-dispersion rather than sign asymmetry or example difficulty.
+
+\paragraph{Forward-looking supervision.}
+Multi-token prediction trains language models to predict several future tokens from one hidden state, with scale-dependent gains \citep{gloeckle2024mtp,mutor}, and future-summary prediction replaces token values with compact summaries of the long-term future \citep{fsf}. Our descriptor head shares the motivation that future supervision should be denser than next-step values, but differs in target (structural statistics of continuous series), in objective geometry (squared-loss forecasting), and in use (an inference-time decision signal with no counterpart in that line). Moirai 2.0 adopts patch-level multi-token prediction for decoding efficiency \citep{moirai2}, again without a decision-time reading.
+
+\paragraph{Uncertainty, abstention, and conformal prediction.}
+Adaptive conformal inference maintains coverage under distribution shift \citep{gibbs2021aci,gibbs2024dtaci}, and CPTC anticipates change points with an exogenous state-transition model \citep{cptc}. Reject-option forecasting is comparatively underexplored \citep{boundedabstention,rejectoptiontsf}. Our selective-prediction signal is endogenous and free: it is read from a descriptor head trained on labels computed from the future window itself.
+
+\paragraph{Benchmark auditing.}
+GIFT-Eval ranks forecasters across many datasets \citep{gifteval}. Our audit is orthogonal: we measure how much repairable structure each dataset-model pair leaves behind, which explains where accuracy interventions can still help.

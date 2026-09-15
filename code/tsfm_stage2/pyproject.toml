@@ -1,0 +1,22 @@
+[project]
+name = "tsfm-stage2"
+version = "0.1.0"
+description = "Stage-2 TSFM fine-tuning with future-descriptor auxiliary head (Chronos-Bolt on ETT)"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.12.1",
+    "transformers>=4.48",
+    "chronos-forecasting>=1.5.0",
+    "numpy>=2.2.6",
+    "pandas>=2.3.3",
+    "scikit-learn>=1.7.2",
+    "datasets>=5.0.1",
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu126"
+url = "https://download.pytorch.org/whl/cu126"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu126" }

@@ -1,0 +1,18 @@
+{
+ "model": "bolt_small",
+ "dataset": "bizitobs_application",
+ "status": "ok",
+ "n_windows": 40,
+ "mse": 1036.046268206276,
+ "mae": 10.784176381739458,
+ "under_rate": 0.4671875,
+ "over_rate": 0.19557291666666668,
+ "wrong_rate": 0.3372395833333333,
+ "amp_base": 0.8665294590418589,
+ "amp_oracle": 0.9330511658720957,
+ "gap": 0.06652170683023684,
+ "ci95_lo": 0.04668859612419231,
+ "ci95_hi": 0.08635481753628137,
+ "notes": "multi_window",
+ "seconds": 0.04
+}

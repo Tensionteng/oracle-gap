@@ -1,0 +1,38 @@
+{
+ "LOOP_SEATTLE/5T": {
+  "csv": "${MTP4TS_ROOT}/gapbench/csv/LOOP_SEATTLE_5T.csv",
+  "n_channels": 323,
+  "tslib_freq": "t",
+  "status": "ok"
+ },
+ "solar/10T": {
+  "csv": "${MTP4TS_ROOT}/gapbench/csv/solar_10T.csv",
+  "n_channels": 137,
+  "tslib_freq": "t",
+  "status": "ok"
+ },
+ "ett1/15T": {
+  "csv": "${MTP4TS_ROOT}/gapbench/csv/ett1_15T.csv",
+  "n_channels": 7,
+  "tslib_freq": "t",
+  "status": "ok"
+ },
+ "ett2/15T": {
+  "csv": "${MTP4TS_ROOT}/gapbench/csv/ett2_15T.csv",
+  "n_channels": 7,
+  "tslib_freq": "t",
+  "status": "ok"
+ },
+ "jena_weather/10T": {
+  "csv": "${MTP4TS_ROOT}/gapbench/csv/jena_weather_10T.csv",
+  "n_channels": 21,
+  "tslib_freq": "t",
+  "status": "ok"
+ },
+ "bizitobs_l2c/5T": {
+  "csv": "${MTP4TS_ROOT}/gapbench/csv/bizitobs_l2c_5T.csv",
+  "n_channels": 7,
+  "tslib_freq": "t",
+  "status": "ok"
+ }
+}

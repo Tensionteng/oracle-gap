@@ -1,0 +1,18 @@
+{
+ "model": "bolt_base",
+ "dataset": "us_births/D",
+ "status": "ok",
+ "n_windows": 20,
+ "mse": 0.32228063567362547,
+ "mae": 0.40630681045144157,
+ "under_rate": 0.55625,
+ "over_rate": 0.315625,
+ "wrong_rate": 0.128125,
+ "amp_base": 0.9146647822353094,
+ "amp_oracle": 0.9224729218101384,
+ "gap": 0.007808139574828954,
+ "ci95_lo": -0.01111629498847247,
+ "ci95_hi": 0.026732574138130377,
+ "notes": "multi_window",
+ "seconds": 0.07
+}

@@ -1,0 +1,562 @@
+{
+ "LOOP_SEATTLE/5T": {
+  "n_items": 323,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 105120,
+  "len_med": 105120,
+  "len_max": 105120,
+  "freq": "5T",
+  "nan": 0.0
+ },
+ "LOOP_SEATTLE/D": {
+  "n_items": 323,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 365,
+  "len_med": 365,
+  "len_max": 365,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "LOOP_SEATTLE/H": {
+  "n_items": 323,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 8760,
+  "len_med": 8760,
+  "len_max": 8760,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "M_DENSE/D": {
+  "n_items": 30,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 730,
+  "len_med": 730,
+  "len_max": 730,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "M_DENSE/H": {
+  "n_items": 30,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 17520,
+  "len_med": 17520,
+  "len_max": 17520,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "SZ_TAXI/15T": {
+  "n_items": 156,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 2976,
+  "len_med": 2976,
+  "len_max": 2976,
+  "freq": "15T",
+  "nan": 0.0
+ },
+ "SZ_TAXI/H": {
+  "n_items": 156,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 744,
+  "len_med": 744,
+  "len_max": 744,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "bitbrains_fast_storage/5T": {
+  "n_items": 1250,
+  "ndim": 2,
+  "C": 2,
+  "len_min": 8640,
+  "len_med": 8640,
+  "len_max": 8640,
+  "freq": "5T",
+  "nan": 0.042
+ },
+ "bitbrains_fast_storage/H": {
+  "n_items": 1250,
+  "ndim": 2,
+  "C": 2,
+  "len_min": 721,
+  "len_med": 721,
+  "len_max": 721,
+  "freq": "H",
+  "nan": 0.0398
+ },
+ "bitbrains_rnd/5T": {
+  "n_items": 500,
+  "ndim": 2,
+  "C": 2,
+  "len_min": 8640,
+  "len_med": 8640,
+  "len_max": 8640,
+  "freq": "5T",
+  "nan": 0.1339
+ },
+ "bitbrains_rnd/H": {
+  "n_items": 500,
+  "ndim": 2,
+  "C": 2,
+  "len_min": 720,
+  "len_med": 720,
+  "len_max": 720,
+  "freq": "H",
+  "nan": 0.1309
+ },
+ "bizitobs_application": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 2,
+  "len_min": 8834,
+  "len_med": 8834,
+  "len_max": 8834,
+  "freq": "10S",
+  "nan": 0.0
+ },
+ "bizitobs_l2c/5T": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 31968,
+  "len_med": 31968,
+  "len_max": 31968,
+  "freq": "5T",
+  "nan": 0.0
+ },
+ "bizitobs_l2c/H": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 2664,
+  "len_med": 2664,
+  "len_max": 2664,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "bizitobs_service": {
+  "n_items": 21,
+  "ndim": 2,
+  "C": 2,
+  "len_min": 8835,
+  "len_med": 8835,
+  "len_max": 8835,
+  "freq": "10S",
+  "nan": 0.0
+ },
+ "car_parts_with_missing": {
+  "n_items": 2674,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 51,
+  "len_med": 51,
+  "len_max": 51,
+  "freq": "M",
+  "nan": 0.0725
+ },
+ "covid_deaths": {
+  "n_items": 266,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 212,
+  "len_med": 212,
+  "len_max": 212,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "electricity/15T": {
+  "n_items": 370,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 140256,
+  "len_med": 140256,
+  "len_max": 140256,
+  "freq": "15T",
+  "nan": 0.1849
+ },
+ "electricity/D": {
+  "n_items": 370,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 1461,
+  "len_med": 1461,
+  "len_max": 1461,
+  "freq": "D",
+  "nan": 0.1848
+ },
+ "electricity/H": {
+  "n_items": 370,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 35064,
+  "len_med": 35064,
+  "len_max": 35064,
+  "freq": "H",
+  "nan": 0.1849
+ },
+ "electricity/W": {
+  "n_items": 370,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 208,
+  "len_med": 208,
+  "len_max": 208,
+  "freq": "W-FRI",
+  "nan": 0.1849
+ },
+ "ett1/15T": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 69680,
+  "len_med": 69680,
+  "len_max": 69680,
+  "freq": "15T",
+  "nan": 0.0
+ },
+ "ett1/D": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 725,
+  "len_med": 725,
+  "len_max": 725,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "ett1/H": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 17420,
+  "len_med": 17420,
+  "len_max": 17420,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "ett1/W": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 103,
+  "len_med": 103,
+  "len_max": 103,
+  "freq": "W-THU",
+  "nan": 0.0
+ },
+ "ett2/15T": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 69680,
+  "len_med": 69680,
+  "len_max": 69680,
+  "freq": "15T",
+  "nan": 0.0
+ },
+ "ett2/D": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 725,
+  "len_med": 725,
+  "len_max": 725,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "ett2/H": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 17420,
+  "len_med": 17420,
+  "len_max": 17420,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "ett2/W": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 7,
+  "len_min": 103,
+  "len_med": 103,
+  "len_max": 103,
+  "freq": "W-THU",
+  "nan": 0.0
+ },
+ "hierarchical_sales/D": {
+  "n_items": 118,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 1825,
+  "len_med": 1825,
+  "len_max": 1825,
+  "freq": "D",
+  "nan": 0.0148
+ },
+ "hierarchical_sales/W": {
+  "n_items": 118,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 260,
+  "len_med": 260,
+  "len_max": 260,
+  "freq": "W-WED",
+  "nan": 0.0
+ },
+ "hospital": {
+  "n_items": 767,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 84,
+  "len_med": 84,
+  "len_max": 84,
+  "freq": "M",
+  "nan": 0.0
+ },
+ "jena_weather/10T": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 21,
+  "len_min": 52704,
+  "len_med": 52704,
+  "len_max": 52704,
+  "freq": "10T",
+  "nan": 0.0002
+ },
+ "jena_weather/D": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 21,
+  "len_min": 366,
+  "len_med": 366,
+  "len_max": 366,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "jena_weather/H": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 21,
+  "len_min": 8784,
+  "len_med": 8784,
+  "len_max": 8784,
+  "freq": "H",
+  "nan": 0.0001
+ },
+ "jena_weather": {
+  "n_items": 1,
+  "ndim": 2,
+  "C": 21,
+  "len_min": 52704,
+  "len_med": 52704,
+  "len_max": 52704,
+  "freq": "10T",
+  "nan": 0.0002
+ },
+ "kdd_cup_2018_with_missing/D": {
+  "n_items": 270,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 396,
+  "len_med": 455,
+  "len_max": 455,
+  "freq": "D",
+  "nan": 0.0632
+ },
+ "kdd_cup_2018_with_missing/H": {
+  "n_items": 270,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 9504,
+  "len_med": 10898,
+  "len_max": 10920,
+  "freq": "H",
+  "nan": 0.1353
+ },
+ "m4_daily": {
+  "n_items": 4227,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 107,
+  "len_med": 2954,
+  "len_max": 9933,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "m4_hourly": {
+  "n_items": 414,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 748,
+  "len_med": 1008,
+  "len_max": 1008,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "m4_monthly": {
+  "n_items": 48000,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 60,
+  "len_med": 220,
+  "len_max": 2812,
+  "freq": "M",
+  "nan": 0.0
+ },
+ "m4_quarterly": {
+  "n_items": 24000,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 24,
+  "len_med": 96,
+  "len_max": 874,
+  "freq": "Q-DEC",
+  "nan": 0.0
+ },
+ "m4_weekly": {
+  "n_items": 359,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 93,
+  "len_med": 947,
+  "len_max": 2610,
+  "freq": "W-SUN",
+  "nan": 0.0
+ },
+ "m4_yearly": {
+  "n_items": 22974,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 19,
+  "len_med": 35,
+  "len_max": 284,
+  "freq": "A-DEC",
+  "nan": 0.0
+ },
+ "restaurant": {
+  "n_items": 807,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 67,
+  "len_med": 296,
+  "len_max": 478,
+  "freq": "D",
+  "nan": 0.1233
+ },
+ "saugeenday/D": {
+  "n_items": 1,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 23741,
+  "len_med": 23741,
+  "len_max": 23741,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "saugeenday/M": {
+  "n_items": 1,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 780,
+  "len_med": 780,
+  "len_max": 780,
+  "freq": "M",
+  "nan": 0.0
+ },
+ "saugeenday/W": {
+  "n_items": 1,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 3391,
+  "len_med": 3391,
+  "len_max": 3391,
+  "freq": "W-THU",
+  "nan": 0.0
+ },
+ "solar/10T": {
+  "n_items": 137,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 52560,
+  "len_med": 52560,
+  "len_max": 52560,
+  "freq": "10T",
+  "nan": 0.0
+ },
+ "solar/D": {
+  "n_items": 137,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 365,
+  "len_med": 365,
+  "len_max": 365,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "solar/H": {
+  "n_items": 137,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 8760,
+  "len_med": 8760,
+  "len_max": 8760,
+  "freq": "H",
+  "nan": 0.0
+ },
+ "solar/W": {
+  "n_items": 137,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 52,
+  "len_med": 52,
+  "len_max": 52,
+  "freq": "W-FRI",
+  "nan": 0.0
+ },
+ "temperature_rain_with_missing": {
+  "n_items": 32072,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 725,
+  "len_med": 725,
+  "len_max": 725,
+  "freq": "D",
+  "nan": 0.0254
+ },
+ "us_births/D": {
+  "n_items": 1,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 7305,
+  "len_med": 7305,
+  "len_max": 7305,
+  "freq": "D",
+  "nan": 0.0
+ },
+ "us_births/M": {
+  "n_items": 1,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 240,
+  "len_med": 240,
+  "len_max": 240,
+  "freq": "M",
+  "nan": 0.0
+ },
+ "us_births/W": {
+  "n_items": 1,
+  "ndim": 1,
+  "C": 1,
+  "len_min": 1043,
+  "len_med": 1043,
+  "len_max": 1043,
+  "freq": "W-TUE",
+  "nan": 0.0
+ }
+}

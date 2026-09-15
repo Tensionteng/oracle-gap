@@ -1,0 +1,47 @@
+{
+  "setting": "smoke_patch",
+  "model": "PatchTST",
+  "data": "ETTh1",
+  "ckpt": "checkpoints/long_term_forecast_smoke_desc_patchtst_PatchSTDesc_ETTh1_ftM_sl96_ll48_pl96_dm16_nh2_el1_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_smoke_0/checkpoint.pth",
+  "n_batches": 4,
+  "batch_size": 16,
+  "l_task_mean": 0.7298447340726852,
+  "l_aux_mean": 6.839136004447937,
+  "per_layer": [
+    {
+      "layer": "embedding",
+      "grad_task": 0.32476910948753357,
+      "grad_aux": 0.07141423132270575,
+      "ratio_aux_over_task": 0.21989231499077352
+    },
+    {
+      "layer": "aux_head",
+      "grad_task": 0.0,
+      "grad_aux": 3.1898299686207574,
+      "ratio_aux_over_task": null
+    },
+    {
+      "layer": "encoder.layer0",
+      "grad_task": 0.1817680110598092,
+      "grad_aux": 0.05453860333820852,
+      "ratio_aux_over_task": 0.30004511255978406
+    },
+    {
+      "layer": "encoder.norm",
+      "grad_task": 0.33869778289364205,
+      "grad_aux": 0.12832531975571998,
+      "ratio_aux_over_task": 0.37887853489733864
+    },
+    {
+      "layer": "forecast_head",
+      "grad_task": 1.640190685830241,
+      "grad_aux": 0.0,
+      "ratio_aux_over_task": 0.0
+    }
+  ],
+  "total": {
+    "grad_task": 1.7156503893110944,
+    "grad_aux": 3.1936745401012616,
+    "ratio_aux_over_task": 1.8614949525839328
+  }
+}

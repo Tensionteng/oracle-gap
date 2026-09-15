@@ -1,0 +1,18 @@
+{
+ "model": "timer_84m",
+ "dataset": "bizitobs_application",
+ "status": "ok",
+ "n_windows": 40,
+ "mse": 1041.3431438471814,
+ "mae": 10.673866789589075,
+ "under_rate": 0.546875,
+ "over_rate": 0.09583333333333334,
+ "wrong_rate": 0.3572916666666667,
+ "amp_base": 0.8634574618752244,
+ "amp_oracle": 0.9323625183166534,
+ "gap": 0.06890505644142897,
+ "ci95_lo": 0.04919600011672594,
+ "ci95_hi": 0.088614112766132,
+ "notes": "multi_window",
+ "seconds": 0.01
+}

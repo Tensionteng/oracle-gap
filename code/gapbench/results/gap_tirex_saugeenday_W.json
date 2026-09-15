@@ -1,0 +1,18 @@
+{
+ "model": "tirex",
+ "dataset": "saugeenday/W",
+ "status": "ok",
+ "n_windows": 20,
+ "mse": 1.4626861668367548,
+ "mae": 0.6067345637237906,
+ "under_rate": 0.378125,
+ "over_rate": 0.309375,
+ "wrong_rate": 0.3125,
+ "amp_base": 0.2552389542992267,
+ "amp_oracle": 0.2590217970869343,
+ "gap": 0.0037828427877075743,
+ "ci95_lo": 0.002358491743460483,
+ "ci95_hi": 0.0052071938319546655,
+ "notes": "multi_window",
+ "seconds": 0.91
+}

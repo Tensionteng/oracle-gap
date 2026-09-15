@@ -1,0 +1,18 @@
+{
+ "model": "chronos2",
+ "dataset": "bizitobs_application",
+ "status": "ok",
+ "n_windows": 40,
+ "mse": 1035.926664504615,
+ "mae": 10.770117603023246,
+ "under_rate": 0.46432291666666664,
+ "over_rate": 0.21848958333333332,
+ "wrong_rate": 0.3171875,
+ "amp_base": 0.8653402441832595,
+ "amp_oracle": 0.9325827163097008,
+ "gap": 0.0672424721264413,
+ "ci95_lo": 0.04739517940534836,
+ "ci95_hi": 0.08708976484753424,
+ "notes": "multi_window",
+ "seconds": 0.03
+}

@@ -1,0 +1,109 @@
+{
+  "setting": "smoke_patchtst",
+  "model": "PatchTST",
+  "data": "ETTh1",
+  "split": "test",
+  "pred_len": 96,
+  "desc_k": 24,
+  "n_windows": 400,
+  "d_hidden": 16,
+  "probe_train_frac": 0.6,
+  "base_ckpt": "checkpoints/long_term_forecast_smoke_base_patchtst_PatchTST_ETTh1_ftM_sl96_ll48_pl96_dm16_nh2_el1_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_smoke_0/checkpoint.pth",
+  "desc_ckpt": "checkpoints/long_term_forecast_smoke_desc_patchtst_PatchSTDesc_ETTh1_ftM_sl96_ll48_pl96_dm16_nh2_el1_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_smoke_0/checkpoint.pth",
+  "base": {
+    "cp_prob": {
+      "auc": 0.5908756438557763,
+      "acc": 0.93125,
+      "pos_rate_test": 0.05625
+    },
+    "cp_pos": {
+      "r2": -0.1407454013824463
+    },
+    "spectral": {
+      "r2_mean": -0.0765078216791153,
+      "r2_per_dim": [
+        -0.1151881217956543,
+        -0.13623583316802979,
+        -0.05116629600524902,
+        -0.12400436401367188,
+        0.0440555214881897
+      ]
+    },
+    "drift_cls": {
+      "acc": 0.275,
+      "majority_acc": 0.3875
+    },
+    "vol_cls": {
+      "acc": 0.28125,
+      "majority_acc": 0.275
+    },
+    "slope_cls": {
+      "acc": 0.2625,
+      "majority_acc": 0.40625
+    }
+  },
+  "desc": {
+    "cp_prob": {
+      "auc": 0.5908756438557763,
+      "acc": 0.93125,
+      "pos_rate_test": 0.05625
+    },
+    "cp_pos": {
+      "r2": -0.141532301902771
+    },
+    "spectral": {
+      "r2_mean": -0.07760230451822281,
+      "r2_per_dim": [
+        -0.11672163009643555,
+        -0.13658416271209717,
+        -0.05234658718109131,
+        -0.1256197690963745,
+        0.04326063394546509
+      ]
+    },
+    "drift_cls": {
+      "acc": 0.275,
+      "majority_acc": 0.3875
+    },
+    "vol_cls": {
+      "acc": 0.28125,
+      "majority_acc": 0.275
+    },
+    "slope_cls": {
+      "acc": 0.2625,
+      "majority_acc": 0.40625
+    }
+  },
+  "diff_desc_minus_base": {
+    "cp_prob": {
+      "auc": 0.0,
+      "acc": 0.0,
+      "pos_rate_test": 0.0
+    },
+    "cp_pos": {
+      "r2": -0.000786900520324707
+    },
+    "spectral": {
+      "r2_mean": -0.0010944828391075134,
+      "r2_per_dim": [
+        -0.00153350830078125,
+        -0.0003483295440673828,
+        -0.0011802911758422852,
+        -0.0016154050827026367,
+        -0.0007948875427246094
+      ]
+    },
+    "drift_cls": {
+      "acc": 0.0,
+      "majority_acc": 0.0
+    },
+    "vol_cls": {
+      "acc": 0.0,
+      "majority_acc": 0.0
+    },
+    "slope_cls": {
+      "acc": 0.0,
+      "majority_acc": 0.0
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+ "model": "timemoe_200m",
+ "dataset": "bizitobs_application",
+ "status": "ok",
+ "n_windows": 40,
+ "mse": 1040.2028172730602,
+ "mae": 10.724432798619464,
+ "under_rate": 0.5703125,
+ "over_rate": 0.07161458333333333,
+ "wrong_rate": 0.3580729166666667,
+ "amp_base": 0.8645309148561059,
+ "amp_oracle": 0.9326680283710616,
+ "gap": 0.06813711351495566,
+ "ci95_lo": 0.04842986355051351,
+ "ci95_hi": 0.08784436347939781,
+ "notes": "multi_window",
+ "seconds": 0.21
+}

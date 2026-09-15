@@ -1,0 +1,49 @@
+\section{Proofs and Derivations}
+\label{app:proofs}
+
+\paragraph{Proof of Proposition~\ref{prop:oracle}.}
+By orthogonality of the conditional mean, $\mathbb{E}\|y - m\|^2 = \mathbb{E}\|y - \mu + \mu - m\|^2 = \mathbb{E}\|\mu - m\|^2 + \mathbb{E}\,\mathrm{tr}\,\Sigma(x)$, since $\mathbb{E}[\langle \varepsilon, \mu - m \rangle] = 0$. The optimal forecast satisfies $\mathbb{E}\|\hat{y}^\star - m\|^2 = \mathbb{E}\|\mu - m\|^2$, which is strictly smaller whenever unpredictable variance exists. The amplitude-ratio bound follows from $\mathrm{Var}(y) = \mathrm{Var}(\mu) + \bar{\sigma}^2$ and $\mathrm{std}(\hat{y}^\star)^2 \le \mathrm{Var}(\mu)$.
+
+\paragraph{Proof of Proposition~\ref{prop:interval}.}
+Expand $\mathbb{E}\|\hat{y} + \delta - y\|^2 = \mathbb{E}\|\hat{y} - y\|^2 + 2\langle \delta, \mathbb{E}[\hat{y} - y] \rangle + |\delta|^2$. Since $\mathbb{E}[\hat{y} - y \mid x] = -b(x)$, the cross term equals $-2\langle \delta, b\rangle$, giving $\Delta\mathcal{L} = |\delta|^2 - 2\langle\delta, b\rangle$. The right side is negative exactly when $|\delta| < 2|b|\cos\theta$, and minimized at $\delta^\star = b$.
+
+\paragraph{Derivation of the Gaussian fixed point \eqref{eq:fixedpoint}.}
+With $w(y) = 1 + \alpha\mathbf{1}[y > c]$, the first-order condition $c = \mathbb{E}[w(y)\,y] / \mathbb{E}[w(y)]$ gives
+\begin{equation}
+    c = \frac{\mu + \alpha\left(\mu\,\bar{\Phi}(t) + \sigma\varphi(t)\right)}{1 + \alpha\,\bar{\Phi}(t)},
+    \qquad t = \frac{c - \mu}{\sigma},
+\end{equation}
+using the truncated normal moments $\mathbb{E}[y \mid y > c] = \mu + \sigma\varphi(t)/\bar{\Phi}(t)$. At $t = 0$, the right-hand side exceeds $\mu$ by $\alpha\sigma\varphi(0)/(1 + \alpha/2)$, and a first-order expansion of the fixed point gives \eqref{eq:fixedpoint}. The $0.4\alpha\sigma$ form quoted in the main text is the small-$\alpha$ slope of this fixed point; the exact shift at $\alpha = 1$ is $0.27\sigma$, so the quoted form is an upper bound on the correction magnitude for $\alpha \le 1$. When the anchor equals $\mu$, the objective is symmetric about $\mu$ and develops minima at $\mu \pm \delta(\alpha)$, a double-well bifurcation that explains the anchor's role in controlling the correction's symmetry.
+
+\section{Diagnostic Protocol Details}
+\label{app:diagnostic}
+
+\TBD{anchor sensitivity table (context mean versus seasonal naive), window-set sensitivity (tail versus sliding), bootstrap repetition convergence, and per-dataset gap table with confidence intervals.}
+
+\section{Full Audit Matrix}
+\label{app:matrix}
+
+\begin{table}[h]
+  \small
+  \caption{Backbone-level law check on Electricity (PatchTST-family region-weighted repair, $\alpha{=}1$). The per-backbone oracle gap, not the architecture family, orders the outcomes.}
+  \label{tab:backbone}
+  \centering
+  \begin{tabular}{lccc}
+    \toprule
+    Backbone & Oracle gap & $\Delta$MSE (\%) & Consistent \\
+    \midrule
+    PatchTST & $+0.030$ & $-2.3$ & \checkmark \\
+    DLinear & $+0.005$ & $+1.9$ & \checkmark \\
+    TimeMixer & $-0.008$ & $+1.7$ & \checkmark \\
+    TimesNet & $-0.034$ & $+4.3$ & \checkmark \\
+    iTransformer & $-0.031$ & $+4.3$ & \checkmark \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\TBD{the complete 665-cell oracle-gap matrix, generated from \texttt{gapbench/results/matrix.csv}.}
+
+\section{Implementation and Reproducibility}
+\label{app:repro}
+
+\TBD{backbone configurations, training protocol, optimizer settings, descriptor-head specification, region-loss hyperparameters, and compute summary.}

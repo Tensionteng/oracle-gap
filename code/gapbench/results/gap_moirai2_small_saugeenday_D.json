@@ -1,0 +1,18 @@
+{
+ "model": "moirai2_small",
+ "dataset": "saugeenday/D",
+ "status": "ok",
+ "n_windows": 20,
+ "mse": 17.59594236343217,
+ "mae": 1.8581806406416372,
+ "under_rate": 0.290625,
+ "over_rate": 0.2625,
+ "wrong_rate": 0.446875,
+ "amp_base": 0.1879849417492867,
+ "amp_oracle": 0.19916193276970462,
+ "gap": 0.011176991020417915,
+ "ci95_lo": 0.009520244681650174,
+ "ci95_hi": 0.012833737359185655,
+ "notes": "multi_window",
+ "seconds": 0.03
+}

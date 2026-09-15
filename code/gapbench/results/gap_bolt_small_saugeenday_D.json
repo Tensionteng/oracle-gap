@@ -1,0 +1,18 @@
+{
+ "model": "bolt_small",
+ "dataset": "saugeenday/D",
+ "status": "ok",
+ "n_windows": 20,
+ "mse": 16.883099068227715,
+ "mae": 1.7721299411756875,
+ "under_rate": 0.40625,
+ "over_rate": 0.15885416666666666,
+ "wrong_rate": 0.4348958333333333,
+ "amp_base": 0.21534280600921568,
+ "amp_oracle": 0.2289995622713188,
+ "gap": 0.013656756262103109,
+ "ci95_lo": 0.011319045461527608,
+ "ci95_hi": 0.01599446706267861,
+ "notes": "multi_window",
+ "seconds": 0.04
+}

@@ -1,0 +1,18 @@
+{
+ "model": "moirai11_large",
+ "dataset": "us_births/W",
+ "status": "ok",
+ "n_windows": 9,
+ "mse": 2.6891993218436805,
+ "mae": 1.250413537057547,
+ "under_rate": 0.3125,
+ "over_rate": 0.3761574074074074,
+ "wrong_rate": 0.3113425925925926,
+ "amp_base": 0.9997675522637383,
+ "amp_oracle": 0.9139446464572997,
+ "gap": -0.08582290580643859,
+ "ci95_lo": -0.1122588716314823,
+ "ci95_hi": -0.05938693998139488,
+ "notes": "multi_window",
+ "seconds": 0.06
+}

@@ -1,0 +1,18 @@
+{
+ "model": "sundial",
+ "dataset": "bizitobs_application",
+ "status": "ok",
+ "n_windows": 40,
+ "mse": 1040.9398670554378,
+ "mae": 10.676656327731818,
+ "under_rate": 0.5518229166666667,
+ "over_rate": 0.10546875,
+ "wrong_rate": 0.34270833333333334,
+ "amp_base": 0.8642568467746211,
+ "amp_oracle": 0.9326812149662154,
+ "gap": 0.06842436819159425,
+ "ci95_lo": 0.04874394232469796,
+ "ci95_hi": 0.08810479405849055,
+ "notes": "multi_window",
+ "seconds": 0.11
+}

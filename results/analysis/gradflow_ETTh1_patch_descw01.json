@@ -1,0 +1,47 @@
+{
+  "setting": "ETTh1_patch_descw01",
+  "model": "PatchTST",
+  "data": "ETTh1",
+  "ckpt": "checkpoints/long_term_forecast_ETTh1_96_96_descw01_PatchSTDesc_ETTh1_ftM_sl96_ll48_pl96_dm512_nh2_el1_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_descw01_0/checkpoint.pth",
+  "n_batches": 16,
+  "batch_size": 32,
+  "l_task_mean": 0.35676453076303005,
+  "l_aux_mean": 5.452662080526352,
+  "per_layer": [
+    {
+      "layer": "embedding",
+      "grad_task": 0.32847270742058754,
+      "grad_aux": 3.187784969806671,
+      "ratio_aux_over_task": 9.704870139256117
+    },
+    {
+      "layer": "aux_head",
+      "grad_task": 0.0,
+      "grad_aux": 27.46727942328027,
+      "ratio_aux_over_task": null
+    },
+    {
+      "layer": "encoder.layer0",
+      "grad_task": 1.7961542506726853,
+      "grad_aux": 16.836852480030668,
+      "ratio_aux_over_task": 9.373834387400207
+    },
+    {
+      "layer": "encoder.norm",
+      "grad_task": 0.12459048733066735,
+      "grad_aux": 1.9856923626703136,
+      "ratio_aux_over_task": 15.937752594226708
+    },
+    {
+      "layer": "forecast_head",
+      "grad_task": 10.262071304192926,
+      "grad_aux": 0.0,
+      "ratio_aux_over_task": 0.0
+    }
+  ],
+  "total": {
+    "grad_task": 10.423996098119135,
+    "grad_aux": 32.43510424715424,
+    "ratio_aux_over_task": 3.1115806205075907
+  }
+}

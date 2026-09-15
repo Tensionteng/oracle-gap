@@ -1,0 +1,12 @@
+{
+  "dump": "pred_dumps/long_term_forecast_smoke_regionfocal_PatchTST_ETTh1_ftM_sl96_ll48_pl96_dm16_nh2_el1_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_smoke_0",
+  "anchor": "ctxmean",
+  "n_windows": 2785,
+  "pred_len": 96,
+  "channels": 7,
+  "undershoot_rate": 0.34569814909805935,
+  "overshoot_rate": 0.14579165598016586,
+  "wrong_side_rate": 0.5085101949217748,
+  "amp_ratio_std": 0.7767982591433928,
+  "mse": 0.8946912095403385
+}

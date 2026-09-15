@@ -1,0 +1,15 @@
+{
+  "setting": "smoke_condc_patch",
+  "model": "PatchTST",
+  "data": "ETTh1",
+  "desc_cond": "concat",
+  "desc_mode": "pooled",
+  "ckpt": "checkpoints/long_term_forecast_smoke_condc_pool_patch_PatchSTDesc_ETTh1_ftM_sl96_ll48_pl96_dm16_nh2_el1_dl1_df32_expand2_dc4_fc3_ebtimeF_dtTrue_smoke_0/checkpoint.pth",
+  "n_windows": 2785,
+  "mse_clean": 0.9026337265968323,
+  "mse_zero": 0.9035117626190186,
+  "mse_perm": 0.9026807546615601,
+  "delta_zero": 0.0008780360221862793,
+  "delta_perm": 4.70280647277832e-05,
+  "delta_perm_rel": 5.2100938773946837e-05
+}

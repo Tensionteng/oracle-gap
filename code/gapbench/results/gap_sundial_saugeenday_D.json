@@ -1,0 +1,18 @@
+{
+ "model": "sundial",
+ "dataset": "saugeenday/D",
+ "status": "ok",
+ "n_windows": 20,
+ "mse": 16.597448609253057,
+ "mae": 1.7887188269530225,
+ "under_rate": 0.4328125,
+ "over_rate": 0.128125,
+ "wrong_rate": 0.4390625,
+ "amp_base": 0.19997583520694087,
+ "amp_oracle": 0.21389277515091357,
+ "gap": 0.013916939943972695,
+ "ci95_lo": 0.012014977866094918,
+ "ci95_hi": 0.015818902021850472,
+ "notes": "multi_window",
+ "seconds": 0.07
+}

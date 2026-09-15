@@ -1,0 +1,12 @@
+{
+  "dump": "pred_dumps/long_term_forecast_ETTh1_96_96_rfau1_PatchTST_ETTh1_ftM_sl96_ll48_pl96_dm512_nh2_el1_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_rf_0",
+  "anchor": "ctxmean",
+  "n_windows": 2785,
+  "pred_len": 96,
+  "channels": 7,
+  "undershoot_rate": 0.45903276481149013,
+  "overshoot_rate": 0.276115670684791,
+  "wrong_side_rate": 0.2648515645037189,
+  "amp_ratio_std": 0.8960287785803457,
+  "mse": 0.38916544119136653
+}

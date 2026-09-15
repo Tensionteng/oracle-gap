@@ -1,0 +1,28 @@
+\section{Analysis: What Does Not Work and Why}
+\label{sec:analysis}
+
+We report the negative results that shaped the design, since each rules out a mechanism one might otherwise expect to work.
+
+\paragraph{Conditioning the forecast on predicted structure.}
+Injecting the descriptor head's representation into the forecast head, by concatenation or FiLM modulation, does not outperform the parallel auxiliary head. Intervention analysis shows the injection is used: zeroing the descriptor embedding degrades test MSE by up to $0.13$. But permuting it across windows costs an order of magnitude less, so the main path consumes distribution-level calibration rather than window-specific content.
+
+\paragraph{Per-window gating of the repair.}
+Modulating the \rfc~coefficient by predicted change-point probability does not beat the static coefficient on Electricity, and a frozen random gate matches it. Per-window gating by the learned descriptor is not the active ingredient; the static counter-bias already captures the available benefit.
+
+\paragraph{Scaling the descriptor objective.}
+Fine-tuning Chronos-Bolt with descriptor supervision is neutral on ETTh1 and degrades ETTm1 by 4\%, and the zero-shot oracle gap is flat from 8M to 311M parameters (Section~\ref{sec:tsfmmap}). We find no scale at which structural supervision improves point accuracy; following \citet{gloeckle2024mtp}, any such effect likely lives in the large-scale fine-tuning regime.
+
+\paragraph{Architecture of the backbone.}
+We conjectured that channel-independent backbones would benefit from region weighting while channel-mixing ones would not. DLinear falsifies the conjecture: it is channel-independent, has a near-zero gap on Electricity, and does not benefit. Across five backbones on Electricity, the per-backbone gap orders the outcomes exactly, and models with non-positive gaps are harmed in proportion. The repair's benefit is a function of leftover structure, not architecture family.
+
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{When to repair, when to report.}
+Our results support a two-stage practice. Compute the oracle gap on the target dataset-model pair; a positive gap licenses repair with a bounded counter-bias such as \rfc, while a non-positive gap predicts harm and calls for decision-time signals such as descriptor-driven abstention. The diagnostic is cheap enough to run as a standard preprocessing step.
+
+\paragraph{Limitations.}
+Positive repair evidence concentrates on datasets with positive gaps, and our backbone coverage, while spanning five families, is not exhaustive. The Gaussian analysis assumes symmetric noise, and the anchor adds a design degree of freedom we have only partially explored. The descriptor head's volatility output is too weak to use, although oracle rankings show it carries the largest selective-prediction signal. All experiments are in the point-forecasting regime; extending the diagnostic and repair to distributional forecasting, where proper scoring rules reward amplitude fidelity directly, is the natural next step.
+
+\paragraph{Conclusion.}
+Over-smoothing is not one phenomenon but two. Rational shrinkage is the price of honest uncertainty, and unexploited structure is the repairable part. The oracle gap tells them apart cheaply and predicts, without exception in our evaluation, when anti-smoothing pays. Where it pays, a region-weighted loss recovers part of the structure; where it does not, a descriptor head reports when the forecast deserves trust. We hope the diagnostic becomes a standard instrument, and that future benchmarks report not only accuracy but the structure that remains to be exploited.

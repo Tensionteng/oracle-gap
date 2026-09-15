@@ -1,0 +1,53 @@
+{
+  "setting": "ETTm1_itr_descw01",
+  "model": "iTransformer",
+  "data": "ETTm1",
+  "ckpt": "checkpoints/long_term_forecast_ETTm1_96_96_descw01_iTransformerDesc_ETTm1_ftM_sl96_ll48_pl96_dm128_nh8_el2_dl1_df128_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_descw01_0/checkpoint.pth",
+  "n_batches": 16,
+  "batch_size": 32,
+  "l_task_mean": 0.30418076924979687,
+  "l_aux_mean": 4.892620921134949,
+  "per_layer": [
+    {
+      "layer": "embedding",
+      "grad_task": 1.807140258513932,
+      "grad_aux": 40.65293119852013,
+      "ratio_aux_over_task": 22.495725501655475
+    },
+    {
+      "layer": "aux_head",
+      "grad_task": 0.0,
+      "grad_aux": 46.648818563893826,
+      "ratio_aux_over_task": null
+    },
+    {
+      "layer": "encoder.layer0",
+      "grad_task": 1.7570443421593644,
+      "grad_aux": 43.671954438502105,
+      "ratio_aux_over_task": 24.855351336683025
+    },
+    {
+      "layer": "encoder.layer1",
+      "grad_task": 2.0900323547274366,
+      "grad_aux": 53.18430441621166,
+      "ratio_aux_over_task": 25.446641673232605
+    },
+    {
+      "layer": "encoder.norm",
+      "grad_task": 0.14648661928995693,
+      "grad_aux": 3.7088307532608393,
+      "ratio_aux_over_task": 25.31856336939244
+    },
+    {
+      "layer": "forecast_head",
+      "grad_task": 1.1744734217414288,
+      "grad_aux": 0.0,
+      "ratio_aux_over_task": 0.0
+    }
+  ],
+  "total": {
+    "grad_task": 3.4816723174462543,
+    "grad_aux": 92.61931955434515,
+    "ratio_aux_over_task": 26.60196339851988
+  }
+}
