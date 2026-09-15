@@ -2,7 +2,6 @@
 Run: uv run python ../paper/figures/make_figs.py  (from Time-Series-Library venv)
 Outputs: ../paper/figures/fig_map.pdf, fig_riskcov.pdf (+ .png previews)
 """
-import os
 import csv
 import numpy as np
 import matplotlib

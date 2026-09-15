@@ -1,0 +1,47 @@
+{
+  "run": "tsfm_bolts_descw01_ETTm1",
+  "ckpt": "./tsfm_stage2/checkpoints/tsfm_bolts_descw01_ETTm1",
+  "dump": "./tsfm_stage2/pred_dumps/tsfm_bolts_descw01_ETTm1",
+  "data": "ETTm1",
+  "n_windows": 11425,
+  "mse_overall": 0.32691657543182373,
+  "spearman_vs_window_mse": {
+    "pred_cp": 0.13082772156726366,
+    "ctx_vol": 0.10047901903118048,
+    "oracle_vol": 0.2840599606139238
+  },
+  "remaining_mse_at_cov08": {
+    "pred_cp": 0.2955804169178009,
+    "ctx_vol": 0.3312464952468872,
+    "oracle_vol": 0.3023105263710022,
+    "random": 0.3275531530380249
+  },
+  "coverage_grid": [
+    1.0,
+    0.98,
+    0.96,
+    0.94,
+    0.92,
+    0.9,
+    0.88,
+    0.86,
+    0.84,
+    0.82,
+    0.8,
+    0.78,
+    0.76,
+    0.74,
+    0.72,
+    0.7,
+    0.68,
+    0.66,
+    0.64,
+    0.62,
+    0.6,
+    0.58,
+    0.56,
+    0.54,
+    0.52,
+    0.5
+  ]
+}
