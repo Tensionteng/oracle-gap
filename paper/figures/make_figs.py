@@ -9,10 +9,13 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.colors import TwoSlopeNorm
 
-OUT = '" + os.environ.get("MTP4TS_ROOT", ".") + "/paper/figures'
+import os
+
+ROOT = os.environ.get('MTP4TS_ROOT', os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+OUT = os.path.join(ROOT, 'paper', 'figures')
 
 # ---------- fig_map ----------
-rows = list(csv.DictReader.open if 0 else csv.DictReader(open('" + os.environ.get("MTP4TS_ROOT", ".") + "/gapbench/results/matrix.csv')))
+rows = list(csv.DictReader(open(os.path.join(ROOT, 'gapbench', 'results', 'matrix.csv'))))
 models_order = ['bolt_tiny', 'bolt_mini', 'bolt_small', 'bolt_base', 'chronos2',
                 'sundial', 'timemoe_50m', 'timemoe_200m', 'timer_84m', 'tirex',
                 'moirai11_small', 'moirai11_large', 'moirai2_small', 'patchtst']
@@ -49,8 +52,8 @@ signals = [('pred_cp', 'Predicted change-point prob. (ours)', '#0072B2', '-'),
            ('ctx_vol', 'Context volatility (static)', '#D55E00', '-.'),
            ('random', 'Random ranking', '#999999', ':'),
            ('oracle_vol', 'Oracle volatility (upper bound)', '#000000', '-')]
-panels = [('ETTh1', '" + os.environ.get("MTP4TS_ROOT", ".") + "/Time-Series-Library/analysis/results/errcorr_ETTh1_patch_descw01_curves.npz'),
-          ('ETTm1', '" + os.environ.get("MTP4TS_ROOT", ".") + "/Time-Series-Library/analysis/results/errcorr_ETTm1_patch_descw01_curves.npz')]
+panels = [('ETTh1', os.path.join(ROOT, 'Time-Series-Library/analysis/results/errcorr_ETTh1_patch_descw01_curves.npz')),
+          ('ETTm1', os.path.join(ROOT, 'Time-Series-Library/analysis/results/errcorr_ETTm1_patch_descw01_curves.npz'))]
 
 fig, axes = plt.subplots(1, 2, figsize=(7.6, 2.6), sharey=True)
 for ax, (name, path) in zip(axes, panels):
@@ -73,3 +76,38 @@ plt.tight_layout()
 fig.savefig(f'{OUT}/fig_riskcov.pdf')
 fig.savefig(f'{OUT}/fig_riskcov.png', dpi=200)
 print('figures written')
+
+# ---------- fig_map_domain (main-text aggregated version) ----------
+DOMAIN = {
+    'SZ_TAXI': 'Transit', 'LOOP_SEATTLE': 'Transit', 'bizitobs_application': 'Cloud/IoT',
+    'bizitobs_l2c': 'Cloud/IoT', 'bizitobs_service': 'Cloud/IoT', 'bitbrains_rnd': 'Cloud/IoT',
+    'bitbrains_fast_storage': 'Cloud/IoT', 'M_DENSE': 'Cloud/IoT', 'kdd_cup_2018_with_missing': 'Cloud/IoT',
+    'solar': 'Energy', 'electricity': 'Energy',
+    'jena_weather': 'Weather', 'temperature_rain_with_missing': 'Weather', 'saugeenday': 'Weather',
+    'hierarchical_sales': 'Sales', 'restaurant': 'Sales', 'car_parts_with_missing': 'Sales',
+    'covid_deaths': 'Health', 'hospital': 'Health', 'us_births': 'Health',
+    'm4_hourly': 'M4', 'm4_daily': 'M4', 'm4_weekly': 'M4', 'm4_monthly': 'M4',
+    'm4_quarterly': 'M4', 'm4_yearly': 'M4',
+    'ett1': 'ETT', 'ett2': 'ETT',
+}
+doms = ['Transit', 'Energy', 'Cloud/IoT', 'Weather', 'Sales', 'Health', 'M4', 'ETT']
+Md = np.full((len(models_order), len(doms)), np.nan)
+for i, m in enumerate(models_order):
+    for j, dm in enumerate(doms):
+        vals = [v for (mm, d), v in gap.items() if mm == m and DOMAIN.get(d.split('/')[0]) == dm]
+        if vals: Md[i, j] = np.nanmean(vals)
+fig, ax = plt.subplots(figsize=(6.2, 3.0))
+im = ax.imshow(Md, cmap='PuOr_r', norm=TwoSlopeNorm(vmin=-0.08, vcenter=0.0, vmax=0.08), aspect='auto')
+ax.set_yticks(range(len(models_order))); ax.set_yticklabels([pretty_model[m] for m in models_order], fontsize=7)
+ax.set_xticks(range(len(doms))); ax.set_xticklabels(doms, fontsize=8, rotation=20, ha='right')
+for i in range(len(models_order)):
+    for j in range(len(doms)):
+        if np.isfinite(Md[i, j]):
+            ax.text(j, i, f'{Md[i,j]:+.2f}', ha='center', va='center', fontsize=5.2,
+                    color='white' if abs(Md[i, j]) > 0.05 else '#333333')
+cbar = fig.colorbar(im, ax=ax, pad=0.01, fraction=0.04, extend='both')
+cbar.set_label('Mean oracle gap by domain', fontsize=7); cbar.ax.tick_params(labelsize=6)
+plt.tight_layout()
+fig.savefig(f'{OUT}/fig_map_domain.pdf')
+fig.savefig(f'{OUT}/fig_map_domain.png', dpi=200)
+print('domain map written')

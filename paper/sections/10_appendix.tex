@@ -42,6 +42,9 @@ The gap is a property of the evaluated window set, not only of the dataset-model
 \paragraph{Anchor.}
 The context-mean anchor is used throughout. It coincides with the reference implemented by reversible instance normalization, which keeps the under-shoot region aligned with the shrinkage attractor of normalized models. A seasonal-naive anchor defines a different notion of shrinkage and is left to future work; Section~\ref{sec:regionfocal} shows the analogous choice inside the repair loss matters similarly (the seasonal anchor removes the benefit there).
 
+\paragraph{Variance of the estimator.}
+Write $a_i = \mathrm{std}(\hat{y}_i)/\mathrm{std}(\tilde{y}_i)$ for the per-window amplitude ratio of the model against a resampled realization and $b_i$ for the ratio against the true future. Treating the windows as independent, the gap estimator $\hat{g} = \bar{a} - \bar{b}$ has variance $\mathrm{Var}(\hat{g}) \le 2\sigma_a^2 / N$ up to window correlations, and $R$ bootstrap repetitions reduce the resampling contribution by a further factor of $R$. With $N \ge 500$ windows and the per-window dispersion $\sigma_a \approx 0.1$ observed in practice, the resulting ninety-five percent interval is at most $\pm 0.01$, consistent with the intervals below $\pm 0.005$ measured across the audit. The estimator is therefore precise enough to resolve gaps of order $0.01$, an order of magnitude smaller than the effects the law uses.
+
 \section{What Does Not Work: Negative Results and Mechanism Analysis}
 \label{app:negative}
 
@@ -59,8 +62,41 @@ Fine-tuning Chronos-Bolt with descriptor supervision is neutral on ETTh1 and deg
 \paragraph{Architecture of the backbone.}
 We conjectured that channel-independent backbones would benefit from region weighting while channel-mixing ones would not. DLinear falsifies the conjecture: it is channel-independent, has a near-zero gap on Electricity, and does not benefit. Across five backbones on Electricity (Table~\ref{tab:backbone}), the per-backbone gap orders the outcomes exactly, and models with non-positive gaps are harmed in proportion. The repair's benefit is a function of leftover structure, not architecture family.
 
+\paragraph{Conditional conformal calibration.}
+Conditioning split-conformal interval width on the predicted volatility bin or change-point probability leaves the width at equal marginal coverage within $0.3\%$ of the unconditional baseline on ETTh1 and ETTm1. The binned descriptor signal carries no extractable width information at this resolution, consistent with the weak volatility ranking below. Selective prediction by ranking, rather than width modulation, is the effective decision use.
+
+\paragraph{Volatility-signal repair.}
+Re-labeling the volatility target in log space (fixing the right-skewed label distribution) does not improve the predicted volatility ranking either: the risk-coverage effect at coverage $0.8$ moves from $+3.1\%$ to $+1.9\%$ on ETTh1 and from $+2.3\%$ to $+1.0\%$ on ETTm1, still worse than random. The volatility head remains the open weakness noted in Section~\ref{sec:decision}.
+
 \section{Audit Details}
 \label{app:matrix}
+
+\paragraph{Full heatmap.}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_map.pdf}
+  \caption{Oracle gap across all fifty GIFT-Eval dataset variants (columns, sorted by mean gap) and thirteen foundation models plus a trained PatchTST (rows).}
+  \label{fig:mapfull}
+\end{figure}
+
+\paragraph{Level-lag cells.}
+Table~\ref{tab:lagcells} records the three datasets that probe the boundary of the dispersion-based law. On trending series, level lag (one-sided residuals) rather than dispersion shrinkage dominates the model's bias, and the repair corrects that lag; the dispersion gap does not see this structure type.
+
+\begin{table}[h]
+  \small
+  \caption{Boundary cells: dispersion gap, residual asymmetry $t = \mathrm{mean}(\mathrm{resid})/\mathrm{std}(\mathrm{resid})$, and \rfc~effect.}
+  \label{tab:lagcells}
+  \centering
+  \begin{tabular}{lccc}
+    \toprule
+    Dataset & Oracle gap & Residual $t$ & $\Delta$MSE (\%) \\
+    \midrule
+    m4\_weekly & $-0.026$ & $+0.11$ & $-5.0$ \\
+    us\_births/W & $-0.075$ & $+0.31$ & $-3.1$ \\
+    saugeenday/D & $-0.025$ & $+0.24$ & $+1.1$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \paragraph{Backbone-level law check.}
 

@@ -3,7 +3,7 @@
 
 \subsection{Task models across datasets}
 
-We evaluate the pairing of the oracle gap with \rfc~($\alpha{=}1$, Section~\ref{sec:regionfocal}) on thirteen dataset-backbone cells, eight across datasets in Table~\ref{tab:law} and five across backbones in Appendix~\ref{app:matrix}. The sign of the gap predicts the direction of the intervention's effect on every cell, counting changes within $\pm 0.5\%$ as neutral. The two largest gaps give the largest improvements, and all non-positive gaps give neutral or negative effects; the magnitude relation is monotone but coarse, and we treat the sign, not the magnitude, as the diagnostic's decision variable.
+We evaluate the pairing of the oracle gap with \rfc~($\alpha{=}1$, Section~\ref{sec:regionfocal}) on thirteen dataset-backbone cells, eight across datasets in Table~\ref{tab:law} and five across backbones in Appendix~\ref{app:matrix}. The sign of the gap predicts the direction of the intervention's effect on every cell, counting changes within $\pm 0.5\%$ as neutral. The two largest gaps give the largest improvements, and all non-positive gaps give neutral or negative effects; the magnitude relation is monotone but coarse, and we treat the sign, not the magnitude, as the diagnostic's decision variable. Section~\ref{sec:regionfocal} delineates a complementary level-lag regime on trending series that this dispersion-based diagnostic does not see.
 
 \begin{table}[t]
   \footnotesize
@@ -26,7 +26,7 @@ We evaluate the pairing of the oracle gap with \rfc~($\alpha{=}1$, Section~\ref{
   \end{tabular}
 \end{table}
 
-Two cells deserve comment. DLinear has a near-zero gap on Electricity despite the worst base accuracy, so high error does not imply repairable smoothness. iTransformer has a negative gap and the best base accuracy, and the intervention hurts it most, as predicted when there is no shrinkage bias to cancel. The same law holds across five backbone families on Electricity (Table~\ref{tab:backbone} in Appendix~\ref{app:matrix}): the per-backbone gap, not the architecture family, orders the outcomes.
+The same law holds across five backbone families on Electricity (Appendix~\ref{app:matrix}, Table~\ref{tab:backbone}): the per-backbone gap, not the architecture family, orders the outcomes.
 
 \subsection{A 665-cell audit of foundation models}
 \label{sec:tsfmmap}
@@ -35,11 +35,11 @@ We extend the audit to thirteen zero-shot time-series foundation models, Chronos
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth,height=4.4cm,keepaspectratio]{figures/fig_map.pdf}
-  \caption{Oracle gap across fifty GIFT-Eval dataset variants (columns) and thirteen foundation models (rows). Positive gaps cluster in transit and energy series and are consistent across models; ETT variants are negative everywhere; the gap is flat across model scale.}
+  \includegraphics[width=\linewidth,height=3.9cm,keepaspectratio]{figures/fig_map_domain.pdf}
+  \caption{Oracle gap aggregated by domain and model (means over the dataset variants within each domain). Positive gaps concentrate in transit and health series and are consistent across models; ETT variants are negative everywhere; the gap is flat across model scale. The two most positive single variants are SZ\_TAXI/15T ($+0.072$) and bizitobs\_application ($+0.067$); the full fifty-variant heatmap is in Appendix~\ref{app:matrix}.}
   \label{fig:map}
 \end{figure}
 
-Three findings stand out. First, the gap is a dataset property far more than a model property: the two most positive variants, SZ\_TAXI at fifteen-minute resolution ($+0.072$) and bizitobs\_application ($+0.067$), are positive for all thirteen models. Second, there is no scale effect: the gap of Chronos-Bolt is flat from 8M to 205M parameters, and Moirai-1.1-Large is slightly more negative than its small variant. Whatever removes repairable structure in zero-shot foundation models, it is not parameter count. Third, task models and foundation models leave complementary structure: on ett1 at fifteen-minute resolution a trained PatchTST leaves a positive gap ($+0.077$) while all zero-shot foundation models are already over-dispersed ($-0.105$), and on SZ\_TAXI the pattern reverses.
 
-paragraph{The audit as a benchmark statement.} The map quantifies benchmark saturation: all ETT variants are non-positive on every model we tested, so anti-smoothing research evaluated on ETT alone is measuring rational shrinkage, and the remaining exploitable structure concentrates in transit, energy, and event-driven series. We release the full matrix and the diagnostic code.
+\paragraph{The audit as a benchmark statement.}
+The map quantifies benchmark saturation: all ETT variants are non-positive on every model we tested, so anti-smoothing research evaluated on ETT alone is measuring rational shrinkage, and the remaining exploitable structure concentrates in transit, energy, and event-driven series. The saturation reading is corroborated from the accuracy side: within each variant, a model's accuracy rank anti-correlates with its oracle gap (median Spearman $\rho = -0.49$ across fifty variants, Wilcoxon $p < 10^{-6}$), so the better a model fits a dataset, the less repairable structure its residuals retain. The two leading positive-gap datasets are the exceptions that make the reading useful: on m4\_weekly ($\rho = +0.87$) and bizitobs\_application ($\rho = +0.52$), even the most accurate models leave measurable structure behind, which is precisely where repair methods should be developed and evaluated. We release the full matrix and the diagnostic code.

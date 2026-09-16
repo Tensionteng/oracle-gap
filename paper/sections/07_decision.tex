@@ -7,7 +7,7 @@ Where the oracle gap is non-positive, over-smoothing cannot be repaired, but the
 
 \subsection{Descriptor supervision does not repair point accuracy at small scale}
 
-The head improves point MSE only marginally and only in specific cells: at best about one percent on PatchTST on ETTm1, with no reliable gain on iTransformer, on longer horizons, or on high-dimensional series, and a slight negative effect when fine-tuning a 48M foundation model. Mechanism analysis shows why: the auxiliary gradient is nine to twenty-five times larger than the task gradient at equal weight, and the gain concentrates in change-point-rich windows, where it reaches 2.8\%. Most windows in these datasets are in the rational-shrinkage regime, so representation shaping has little bias to remove.
+The head improves point MSE only marginally and only in specific cells: at best about one percent on PatchTST on ETTm1, with no reliable gain elsewhere and a negative effect when fine-tuning a 48M foundation model (mechanism analysis in Appendix~\ref{app:negative}). Most windows in these datasets are in the rational-shrinkage regime, so representation shaping has little bias to remove.
 
 \subsection{The descriptor output is a reliable forward-looking risk signal}
 
@@ -22,4 +22,3 @@ The same signal transfers to a fine-tuned foundation model at no extra cost. On 
   \label{fig:riskcov}
 \end{figure}
 
-\paragraph{Scope.} The working signal is the change-point probability; the predicted volatility bin ranks poorly, even though the oracle volatility ranking marks a much larger upper bound of 7 to 10 percent. The signal is forward-looking: it cannot be recovered from static context statistics, as the context-volatility baseline shows. The descriptor head is best understood as an auxiliary sensory organ for forecast-time decisions, not as an accuracy device.
