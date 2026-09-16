@@ -265,4 +265,25 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         np.save(folder_path + 'pred.npy', preds)
         np.save(folder_path + 'true.npy', trues)
 
+        # optional val-split dump, used to fit post-hoc calibration baselines
+        # without touching the test labels
+        if getattr(self.args, 'save_val_pred', 0):
+            val_data, val_loader = self._get_data(flag='val')
+            vpreds, vtrues = [], []
+            self.model.eval()
+            with torch.no_grad():
+                for batch_x, batch_y, batch_x_mark, batch_y_mark in val_loader:
+                    batch_x = batch_x.float().to(self.device)
+                    batch_y = batch_y.float().to(self.device)
+                    batch_x_mark = batch_x_mark.float().to(self.device)
+                    batch_y_mark = batch_y_mark.float().to(self.device)
+                    dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float()
+                    dec_inp = torch.cat([batch_y[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                    outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                    outputs = outputs[:, -self.args.pred_len:, :].detach().cpu().numpy()
+                    vpreds.append(outputs)
+                    vtrues.append(batch_y[:, -self.args.pred_len:, :].cpu().numpy())
+            np.save(folder_path + 'val_pred.npy', np.concatenate(vpreds, axis=0))
+            np.save(folder_path + 'val_true.npy', np.concatenate(vtrues, axis=0))
+
         return

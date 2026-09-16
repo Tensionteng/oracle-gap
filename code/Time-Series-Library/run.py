@@ -150,8 +150,8 @@ if __name__ == '__main__':
     parser.add_argument('--aux_head', type=str, default='none', choices=['none', 'desc', 'valuemtp', 'hcan'],
                         help='auxiliary head on the pooled hidden state: none (stock), desc (future-window structural descriptors), valuemtp (value-level MTP control), hcan (HCAN-style hierarchical bin classification, AAAI 2025)')
     parser.add_argument('--aux_weight', type=float, default=1.0, help='weight of the auxiliary loss')
-    parser.add_argument('--task_loss', type=str, default='mse', choices=['mse', 'fredf', 'regionfocal'],
-                        help='task loss: mse (stock), fredf (rFFT-domain MSE, FreDF ICLR 2025), or regionfocal (region-weighted anti-over-smoothing)')
+    parser.add_argument('--task_loss', type=str, default='mse', choices=['mse', 'fredf', 'regionfocal', 'huber', 'mae'],
+                        help='task loss: mse (stock), fredf (rFFT-domain MSE, FreDF ICLR 2025), regionfocal (region-weighted anti-over-smoothing), huber/mae (robust-loss controls)')
     parser.add_argument('--rf_au', type=float, default=1.0, help='regionfocal alpha_U (undershoot weight)')
     parser.add_argument('--rf_ao', type=float, default=0.0, help='regionfocal alpha_O (overshoot weight)')
     parser.add_argument('--rf_aw', type=float, default=-1.0, help='regionfocal alpha_W (wrong-side weight); -1 = follow rf_au/2')
@@ -175,6 +175,8 @@ if __name__ == '__main__':
                         help='multi-scale volatility: add a near-window (first desc_k steps) vol bin head alongside the full-window one')
     parser.add_argument('--vol_qr', type=int, default=0,
                         help='replace the 5-bin volatility classification with a continuous log(vol) regression head (MSE)')
+    parser.add_argument('--desc_level', type=int, default=0,
+                        help='add a z-scored future-window mean-level regression target to the descriptor loss (explicit level supervision)')
     parser.add_argument('--num_coarse', type=int, default=2, help='HCAN coarse bins')
     parser.add_argument('--num_fine', type=int, default=4, help='HCAN fine bins')
     parser.add_argument('--hcan_hidden', type=int, default=512, help='HCAN branch hidden dim (hidden_dim in the paper)')
@@ -185,6 +187,8 @@ if __name__ == '__main__':
                         help='negative control: shuffle descriptor targets across the batch (severs sample<->label link)')
     parser.add_argument('--save_pred', type=int, default=1,
                         help='save test pred/true/window_index npy to ./pred_dumps/<setting>/ (only read by Exp_Descriptor_Forecast)')
+    parser.add_argument('--save_val_pred', type=int, default=0,
+                        help='also save val-split pred/true npy next to the test dump (fits post-hoc calibration baselines without touching test labels)')
 
     # GCN
     parser.add_argument('--node_dim', type=int, default=10, help='each node embbed to dim dimentions')

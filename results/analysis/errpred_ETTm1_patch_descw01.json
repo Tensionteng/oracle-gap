@@ -1,0 +1,52 @@
+{
+  "setting": "ETTm1_patch_descw01",
+  "model": "PatchTST",
+  "data": "ETTm1",
+  "n_val": 11425,
+  "n_test": 11425,
+  "mse_overall": 0.3227916359901428,
+  "spearman_vs_window_mse": {
+    "pred_cp": 0.10312299166935027,
+    "errpred_ridge": 0.18096182824128065,
+    "errpred_mlp": -0.0475080560836551,
+    "ctx_vol": 0.08814153754320228,
+    "oracle_vol": 0.23955737475201952
+  },
+  "remaining_mse_at_cov08": {
+    "pred_cp": 0.30559074878692627,
+    "errpred_ridge": 0.30468595027923584,
+    "errpred_mlp": 0.3123883008956909,
+    "ctx_vol": 0.32809966802597046,
+    "oracle_vol": 0.2995862662792206,
+    "random": 0.3233207523822784
+  },
+  "coverage_grid": [
+    1.0,
+    0.98,
+    0.96,
+    0.94,
+    0.92,
+    0.9,
+    0.88,
+    0.86,
+    0.84,
+    0.82,
+    0.8,
+    0.78,
+    0.76,
+    0.74,
+    0.72,
+    0.7,
+    0.68,
+    0.66,
+    0.64,
+    0.62,
+    0.6,
+    0.58,
+    0.56,
+    0.54,
+    0.52,
+    0.5
+  ],
+  "note": "error predictors trained on the validation split (context statistics only)"
+}

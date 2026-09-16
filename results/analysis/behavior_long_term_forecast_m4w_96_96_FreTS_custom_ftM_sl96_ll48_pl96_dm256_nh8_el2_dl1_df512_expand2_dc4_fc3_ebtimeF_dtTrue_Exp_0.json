@@ -1,0 +1,12 @@
+{
+  "dump": "results/long_term_forecast_m4w_96_96_FreTS_custom_ftM_sl96_ll48_pl96_dm256_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0",
+  "anchor": "ctxmean",
+  "n_windows": 145,
+  "pred_len": 96,
+  "channels": 139,
+  "undershoot_rate": 0.5918398040188538,
+  "overshoot_rate": 0.1309073430910444,
+  "wrong_side_rate": 0.2772528528901017,
+  "amp_ratio_std": 0.7777273092039744,
+  "mse": 1.4219022216848654
+}

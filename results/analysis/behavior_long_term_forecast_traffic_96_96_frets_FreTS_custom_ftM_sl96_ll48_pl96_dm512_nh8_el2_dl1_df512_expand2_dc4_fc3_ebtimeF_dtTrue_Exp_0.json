@@ -1,0 +1,12 @@
+{
+  "dump": "results/long_term_forecast_traffic_96_96_frets_FreTS_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df512_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0",
+  "anchor": "ctxmean",
+  "n_windows": 3413,
+  "pred_len": 96,
+  "channels": 862,
+  "undershoot_rate": 0.47447228962710025,
+  "overshoot_rate": 0.40253559490248036,
+  "wrong_side_rate": 0.12299205527906243,
+  "amp_ratio_std": 0.7530096185569105,
+  "mse": 0.5542493181656338
+}

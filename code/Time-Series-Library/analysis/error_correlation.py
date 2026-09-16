@@ -74,6 +74,10 @@ def main():
     parser.add_argument('--setting', type=str, default=None)
     parser.add_argument('--model', type=str, default='PatchTST', choices=list(DESC_BACKBONE))
     parser.add_argument('--desc_mode', type=str, default='pooled')
+    parser.add_argument('--vol_ms', type=int, default=0,
+                        help='read the multi-scale vol signal (0.5*E[vol]+0.5*E[vol_near]) from a --vol_ms checkpoint')
+    parser.add_argument('--vol_qr', type=int, default=0,
+                        help='read the continuous log-vol prediction from a --vol_qr checkpoint')
     parser.add_argument('--data', type=str, default='ETTh1')
     parser.add_argument('--root_path', type=str, default='./dataset/ETT-small/')
     parser.add_argument('--data_path', type=str, default=None)
@@ -145,6 +149,10 @@ def main():
 
     sig = {k: [] for k in ['pred_cp', 'pred_drift_exp', 'pred_vol_exp', 'pred_slope_exp',
                            'pred_vol_conf', 'oracle_cp', 'oracle_vol', 'ctx_vol']}
+    if args.vol_ms:
+        sig['pred_volms_exp'] = []
+    if args.vol_qr:
+        sig['pred_volqr'] = []
     classes = torch.arange(5, device=device, dtype=torch.float)
     with torch.no_grad():
         for batch_x, batch_y, batch_x_mark, batch_y_mark in loader:
@@ -162,6 +170,12 @@ def main():
             vol_p = torch.softmax(aux['vol'], dim=-1)
             sig['pred_vol_exp'].append((vol_p * classes).sum(-1).cpu().numpy())
             sig['pred_vol_conf'].append(vol_p.max(-1).values.cpu().numpy())
+            if args.vol_ms and 'vol_near' in aux:
+                voln_p = torch.softmax(aux['vol_near'], dim=-1)
+                sig['pred_volms_exp'].append(
+                    (0.5 * (vol_p * classes).sum(-1) + 0.5 * (voln_p * classes).sum(-1)).cpu().numpy())
+            if args.vol_qr and 'vol_qr' in aux:
+                sig['pred_volqr'].append(aux['vol_qr'].cpu().numpy())
             sig['pred_drift_exp'].append((torch.softmax(aux['drift'], dim=-1) * classes).sum(-1).cpu().numpy())
             sig['pred_slope_exp'].append((torch.softmax(aux['slope'], dim=-1) * classes).sum(-1).cpu().numpy())
 

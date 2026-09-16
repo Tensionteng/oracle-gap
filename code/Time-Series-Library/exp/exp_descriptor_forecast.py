@@ -106,6 +106,10 @@ class Exp_Descriptor_Forecast(Exp_Long_Term_Forecast):
                 lambda_base=self.args.rf_lambda_base, anchor=self.args.rf_anchor,
                 soft=self.args.rf_soft, detach=self.args.rf_detach,
                 seq_len=self.args.seq_len, freq=self.args.freq)
+        elif task_loss == 'huber':
+            criterion = nn.HuberLoss()
+        elif task_loss == 'mae':
+            criterion = nn.L1Loss()
         else:
             criterion = nn.MSELoss()
         if task_loss != 'mse':
@@ -113,10 +117,10 @@ class Exp_Descriptor_Forecast(Exp_Long_Term_Forecast):
         return criterion
 
     def _select_eval_criterion(self):
-        # regionfocal is a train-time reweighting objective: val/test (incl.
+        # regionfocal/huber/mae are train-time objectives: val/test (incl.
         # early stopping) must use plain MSE to stay on the stock protocol.
         # fredf keeps its own loss for vali (its established behavior).
-        if getattr(self.args, 'task_loss', 'mse') == 'regionfocal':
+        if getattr(self.args, 'task_loss', 'mse') in ('regionfocal', 'huber', 'mae'):
             return nn.MSELoss()
         return self._select_criterion()
 
@@ -126,7 +130,11 @@ class Exp_Descriptor_Forecast(Exp_Long_Term_Forecast):
         if self.aux_head == 'desc':
             channel_mode = getattr(self.args, 'desc_mode', 'pooled') == 'channel'
             targets = compute_descriptor_targets(batch_y, self.desc_k, self.desc_stats,
-                                                 reduce=None if channel_mode else 'mean')
+                                                 reduce=None if channel_mode else 'mean',
+                                                 vol_log=bool(getattr(self.args, 'vol_log', 0)),
+                                                 vol_ms=bool(getattr(self.args, 'vol_ms', 0)),
+                                                 vol_qr=bool(getattr(self.args, 'vol_qr', 0)),
+                                                 level=bool(getattr(self.args, 'desc_level', 0)))
             if getattr(self.args, 'desc_shuffle', 0):
                 # negative control: one shared batch-dim permutation for all
                 # descriptor targets, severing the sample<->label link while
@@ -140,10 +148,21 @@ class Exp_Descriptor_Forecast(Exp_Long_Term_Forecast):
                 loss = loss + F.smooth_l1_loss(aux['cp_pos'], targets['cp_pos'])
             if 'mid' in self.desc_scales:
                 # cross_entropy over flattened (batch x channel) positions
+                if getattr(self.args, 'vol_qr', 0):
+                    vol_term = F.mse_loss(aux['vol_qr'], targets['vol_log'])
+                else:
+                    vol_term = F.cross_entropy(aux['vol'].reshape(-1, n_bins),
+                                               targets['vol_cls'].reshape(-1))
                 mid = F.cross_entropy(aux['drift'].reshape(-1, n_bins), targets['drift_cls'].reshape(-1)) \
-                    + F.cross_entropy(aux['vol'].reshape(-1, n_bins), targets['vol_cls'].reshape(-1)) \
+                    + vol_term \
                     + F.cross_entropy(aux['slope'].reshape(-1, n_bins), targets['slope_cls'].reshape(-1))
+                if getattr(self.args, 'vol_ms', 0):
+                    mid = mid + F.cross_entropy(aux['vol_near'].reshape(-1, n_bins),
+                                                targets['vol_near_cls'].reshape(-1))
                 loss = mid if loss is None else loss + mid
+            if getattr(self.args, 'desc_level', 0):
+                lv = F.mse_loss(aux['level'], targets['level'])
+                loss = lv if loss is None else loss + lv
             if 'far' in self.desc_scales:
                 far = F.mse_loss(aux['spectral'], targets['spectral'])
                 loss = far if loss is None else loss + far
@@ -421,13 +440,36 @@ class Exp_Descriptor_Forecast(Exp_Long_Term_Forecast):
         # test loader is sequential, so window_index[i] = i = start offset of
         # the input window inside the test split (future window starts at
         # seq_len + i); see data_provider/data_loader.py __getitem__.
+        dump_dir = os.path.join('./pred_dumps/', setting)
         if getattr(self.args, 'save_pred', 1):
-            dump_dir = os.path.join('./pred_dumps/', setting)
             if not os.path.exists(dump_dir):
                 os.makedirs(dump_dir)
             np.save(os.path.join(dump_dir, 'pred.npy'), preds)
             np.save(os.path.join(dump_dir, 'true.npy'), trues)
             np.save(os.path.join(dump_dir, 'window_index.npy'), np.arange(preds.shape[0]))
+
+        # optional val-split dump, used to fit post-hoc calibration baselines
+        # without touching the test labels
+        if getattr(self.args, 'save_val_pred', 0):
+            if not os.path.exists(dump_dir):
+                os.makedirs(dump_dir)
+            val_data, val_loader = self._get_data(flag='val')
+            vpreds, vtrues = [], []
+            self.model.eval()
+            with torch.no_grad():
+                for batch_x, batch_y, batch_x_mark, batch_y_mark in val_loader:
+                    batch_x = batch_x.float().to(self.device)
+                    batch_y = batch_y.float().to(self.device)
+                    batch_x_mark = batch_x_mark.float().to(self.device)
+                    batch_y_mark = batch_y_mark.float().to(self.device)
+                    dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float()
+                    dec_inp = torch.cat([batch_y[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
+                    outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                    outputs = outputs[:, -self.args.pred_len:, :].detach().cpu().numpy()
+                    vpreds.append(outputs)
+                    vtrues.append(batch_y[:, -self.args.pred_len:, :].cpu().numpy())
+            np.save(os.path.join(dump_dir, 'val_pred.npy'), np.concatenate(vpreds, axis=0))
+            np.save(os.path.join(dump_dir, 'val_true.npy'), np.concatenate(vtrues, axis=0))
             print('pred dump saved to {}'.format(dump_dir))
 
         return

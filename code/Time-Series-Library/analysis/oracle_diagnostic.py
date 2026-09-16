@@ -56,6 +56,7 @@ def main():
     ap.add_argument('--seq_len', type=int, default=96)
     ap.add_argument('--reps', type=int, default=5)
     ap.add_argument('--seed', type=int, default=0)
+    ap.add_argument('--anchor', default='ctxmean', choices=['ctxmean', 'naive'])
     args = ap.parse_args()
 
     pred = np.load(f'{args.dump}/pred.npy')
@@ -63,7 +64,10 @@ def main():
     N, L, C = pred.shape
     xs = load_inputs(args.root_path, args.data_path or f'{args.data}.csv',
                      args.data, args.seq_len, N)
-    anchor = xs.mean(axis=1, keepdims=True)  # ctxmean，广播到 L
+    if args.anchor == 'naive':
+        anchor = xs[:, -1:, :]  # 上下文末值（跟随水平）
+    else:
+        anchor = xs.mean(axis=1, keepdims=True)  # ctxmean，广播到 L
 
     base_m = metrics(pred, true, anchor)
     resid = true - pred

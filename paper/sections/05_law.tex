@@ -1,7 +1,7 @@
 \section{The Repair Decision: Diagnosing When Anti-Smoothing Helps}
 \label{sec:law}
 
-The oracle gap is one branch of a repair decision; Section~\ref{sec:regionfocal} completes the tree with the level-lag regime. We first establish that the dispersion branch is a reliable gate. We evaluate the pairing of the oracle gap with \rfc~($\alpha{=}1$, Section~\ref{sec:regionfocal}) on thirteen dataset-backbone cells, eight across datasets in Table~\ref{tab:law} and five across backbones in Appendix~\ref{app:matrix}. The sign of the gap predicts the direction of the intervention's effect on every cell, counting changes within $\pm 0.5\%$ as neutral. The two largest gaps give the largest improvements, and all non-positive gaps give neutral or negative effects; the magnitude relation is monotone but coarse, and we treat the sign, not the magnitude, as the diagnostic's decision variable. Under a sign-symmetric null the probability of observing zero contradictions across these cells is below $10^{-4}$, so the gate is a statistical regularity, not a coincidence.
+The oracle gap is one branch of a repair decision; Section~\ref{sec:regionfocal} completes the tree with the level-lag regime. Cells are routed by the residual's dominant bias type, measured by the residual mean over its standard deviation: dispersion-dominated cells are gated by the oracle gap here, while lag-dominated cells are analyzed in Section~\ref{sec:regionfocal}. We first establish that the dispersion branch is a reliable gate. We evaluate the pairing of the oracle gap with \rfc~($\alpha{=}1$, Section~\ref{sec:regionfocal}) on fourteen dispersion-regime dataset-backbone cells, nine across datasets in Table~\ref{tab:law} and five across backbones in Appendix~\ref{app:matrix}. The sign of the gap predicts the direction of the intervention's effect on every cell, counting changes within $\pm 0.5\%$ as neutral. The two largest gaps give the largest improvements, and all non-positive gaps give neutral or negative effects; the magnitude relation is monotone but coarse, and we treat the sign, not the magnitude, as the diagnostic's decision variable. Under a sign-symmetric null the probability of observing zero contradictions across these cells is below $10^{-4}$, so the gate is a statistical regularity, not a coincidence.
 
 \begin{table}[t]
   \footnotesize
@@ -14,6 +14,7 @@ The oracle gap is one branch of a repair decision; Section~\ref{sec:regionfocal}
     \midrule
     Electricity & PatchTST & $+0.030$ & $-2.3$ & \checkmark \\
     Traffic & PatchTST & $+0.027$ & $-0.9$ & \checkmark \\
+    Traffic & iTransformer & $-0.023$ & $+4.4$ & \checkmark \\
     SWaT & PatchTST & $+0.006$ & $+0.1$ & \checkmark \\
     bizitobs\_app. & PatchTST & $+0.009$ & $-1.7$ & \checkmark \\
     SZ\_TAXI & PatchTST & $-0.010$ & $+0.4$ & \checkmark \\
@@ -24,7 +25,7 @@ The oracle gap is one branch of a repair decision; Section~\ref{sec:regionfocal}
   \end{tabular}
 \end{table}
 
-The same law holds across five backbone families on Electricity (Appendix~\ref{app:matrix}, Table~\ref{tab:backbone}): the per-backbone gap, not the architecture family, orders the outcomes.
+The same law holds across five backbone families on Electricity (Appendix~\ref{app:matrix}, Table~\ref{tab:backbone}): the per-backbone gap, not the architecture family, orders the outcomes. The single positive-gap cell in which \rfc~does not help is FreTS on Traffic ($+0.9 \pm 0.1\%$ across three seeds against a gap of $+0.013$); its residual is level-lag dominated (mean over std $+0.28$, against $\le 0.01$ for both Traffic cells in Table~\ref{tab:law}), so the decision tree routes it to the lag branch, whose behavior on this cell is analyzed in Section~\ref{sec:regionfocal} and Appendix~\ref{app:negative}.
 
 \subsection{A 665-cell audit of foundation models}
 \label{sec:tsfmmap}

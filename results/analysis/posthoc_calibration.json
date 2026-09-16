@@ -1,0 +1,74 @@
+{
+  "ECL": {
+    "base": {
+      "scalar_gain": {
+        "param": 1.028885471425076,
+        "test_mse": 0.17887937439124224
+      },
+      "channel_gain": {
+        "test_mse": 0.17716720294458757
+      },
+      "step_gain": {
+        "test_mse": 0.1788318369836184
+      },
+      "step_affine": {
+        "test_mse": 0.17888080542368215
+      },
+      "test_mse_base": 0.18004593138222272,
+      "dump": "long_term_forecast_ECL_96_96_PatchTST_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0"
+    },
+    "rfau1": {
+      "scalar_gain": {
+        "param": 0.9880400062462183,
+        "test_mse": 0.17586312012717079
+      },
+      "channel_gain": {
+        "test_mse": 0.17428845585267777
+      },
+      "step_gain": {
+        "test_mse": 0.17578215875104994
+      },
+      "step_affine": {
+        "test_mse": 0.17607105504799797
+      },
+      "test_mse_base": 0.1757871956131489,
+      "dump": "long_term_forecast_ECL_96_96_rfau1_PatchTST_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_rf1_0"
+    }
+  },
+  "m4_weekly": {
+    "base": {
+      "scalar_gain": {
+        "param": 0.988700121545017,
+        "test_mse": 0.7774074520849078
+      },
+      "channel_gain": {
+        "test_mse": 2.7757230849419945
+      },
+      "step_gain": {
+        "test_mse": 0.7976999088040471
+      },
+      "step_affine": {
+        "test_mse": 0.8076477782804259
+      },
+      "test_mse_base": 0.7543021918103259,
+      "dump": "long_term_forecast_m4w_96_96_PatchTST_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0"
+    },
+    "rfau1": {
+      "scalar_gain": {
+        "param": 0.9507620735292016,
+        "test_mse": 0.8096945621125822
+      },
+      "channel_gain": {
+        "test_mse": 2.5059030420639887
+      },
+      "step_gain": {
+        "test_mse": 0.8354272709990739
+      },
+      "step_affine": {
+        "test_mse": 0.9003864520437692
+      },
+      "test_mse_base": 0.7169878059202213,
+      "dump": "long_term_forecast_m4w_96_96_rfau1_PatchTST_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_rf_0"
+    }
+  }
+}
