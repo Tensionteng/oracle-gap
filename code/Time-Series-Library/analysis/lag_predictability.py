@@ -63,6 +63,8 @@ GRID = [
      TSLIB + '/dataset/traffic/', 'traffic.csv', 'custom', '+4.4%'),
     ('traffic-PatchTST', 'long_term_forecast_traffic_96_96_PatchTST_custom_*_Exp_0',
      TSLIB + '/dataset/traffic/', 'traffic.csv', 'custom', '-0.9%'),
+    ('solar', 'long_term_forecast_solar_96_96_PatchTST_custom_*_Exp_0',
+     ROOT + '/gapbench/csv/', 'solar_H.csv', 'custom', '-3.4%'),
     ('ETTh1', 'long_term_forecast_ETTh1_96_96_PatchTST_ETTh1_*_Exp_0',
      TSLIB + '/dataset/ETT-small/', 'ETTh1.csv', 'ETTh1', None),
     ('ETTm1', 'long_term_forecast_ETTm1_96_96_PatchTST_ETTm1_*_Exp_0',
