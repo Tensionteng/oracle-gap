@@ -22,19 +22,19 @@ using the truncated normal moments $\mathbb{E}[y \mid y > c] = \mu + \sigma\varp
 All reported gaps use the following fixed protocol unless stated otherwise. Statistics are computed per window and per channel around the context-mean anchor, in the per-window, per-channel standardized space, so that series of different scales contribute comparably and residual permutation remains meaningful. The evaluation set is the last $96{+}96$ steps of each series (the tail protocol), with twenty bootstrap repetitions of the window permutation; the mean is reported with a ninety-five percent confidence interval from the bootstrap distribution. All confidence intervals in the audit are below $\pm 0.005$.
 
 \paragraph{Window-set sensitivity.}
-The gap is a property of the evaluated window set, not only of the dataset-model pair, and we therefore fix one protocol for all cross-model comparisons. Table~\ref{tab:windows} illustrates the sensitivity: on SZ\_TAXI, a sliding protocol that matches the TSLib test split places PatchTST near zero, while the tail protocol reveals strong over-dispersion; on solar, the two protocols move the estimate by a similar margin in the opposite direction. The law in Section~\ref{sec:law} was verified within each fixed protocol separately, so protocol sensitivity does not affect its validity, but absolute gap values across protocols should not be compared.
+The gap is a property of the evaluated window set, not only of the dataset-model pair, and we therefore fix one protocol for all cross-model comparisons. Table~\ref{tab:windows} illustrates the sensitivity: on SZ\_TAXI, a sliding protocol that matches the TSLib test split places PatchTST near zero, while the tail protocol reveals strong over-dispersion; on solar, the two protocols flip the sign of the estimate. The law in Section~\ref{sec:law} was verified within each fixed protocol separately, so protocol sensitivity does not affect its validity, but absolute gap values across protocols should not be compared.
 
 \begin{table}[h]
   \small
-  \caption{Oracle gap of the same model on the same dataset under two window protocols.}
+  \caption{Oracle gap of the same model on the same dataset under two window protocols, recomputed on the canonical benchmark-trained PatchTST with the instance-normalized cross-dataset estimator. Absolute values differ from Table~\ref{tab:law}'s per-dataset estimator and are not compared across tables.}
   \label{tab:windows}
   \centering
   \begin{tabular}{llcc}
     \toprule
     Dataset & Backbone & Sliding (TSLib test) & Tail (last $96{+}96$) \\
     \midrule
-    SZ\_TAXI/15T & PatchTST & $-0.010$ & $-0.338$ \\
-    solar/H & PatchTST & $+0.026$ & $-0.007$ \\
+    SZ\_TAXI/15T & PatchTST & $-0.015$ & $-0.343$ \\
+    solar/H & PatchTST & $+0.044$ & $-0.014$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -63,10 +63,10 @@ Fine-tuning Chronos-Bolt with descriptor supervision is neutral on ETTh1 and deg
 We conjectured that channel-independent backbones would benefit from region weighting while channel-mixing ones would not. DLinear falsifies the conjecture: it is channel-independent, has a near-zero gap on Electricity, and does not benefit. Across five backbones on Electricity (Table~\ref{tab:backbone}), the per-backbone gap orders the outcomes exactly, and models with non-positive gaps are harmed in proportion. The repair's benefit is a function of leftover structure, not architecture family.
 
 \paragraph{When the repair fails despite a repairable bias: checkpoint selection.}
-TimesNet on m4\_weekly has every surface signature of a repairable cell---strong level lag (residual $t = +147$) that context cannot predict ($R^2 = -20$), and a non-degenerate anchor geometry (under-shoot rate $0.65$)---yet \rfc~leaves no consistent effect across three seeds ($+14.4$/$+2.8$/$-1.3\%$). The failure is realized through optimization, not geometry: under the reweighted objective the model reaches its best validation MSE at epoch three ($1.68$, better than the baseline's final $1.71$), but that checkpoint's test MSE is $2.16$ versus the baseline's $1.88$, and training past it degrades validation MSE until early stopping fires. The val-period gain of the repaired solution does not transfer across the val/test period shift on this backbone, so early stopping selects a checkpoint that is better on validation and worse on test. TimesNet on m4\_weekly is also the most misspecified cell we tested (MSE $1.93$ against PatchTST's $0.75$), supporting the scope condition: \rfc~is a local repair around a near-optimal backbone, not a fix for gross misspecification.
+TimesNet on m4\_weekly has every surface signature of a repairable cell---strong level lag (signed residual effect size $+0.31$) that context cannot predict ($R^2 = -20$), and a non-degenerate anchor geometry (under-shoot rate $0.65$)---yet \rfc~leaves no consistent effect across three seeds ($+14.4$/$+2.8$/$-1.3\%$). The failure is realized through optimization, not geometry: under the reweighted objective the model reaches its best validation MSE at epoch three ($1.68$, better than the baseline's final $1.71$), but that checkpoint's test MSE is $2.16$ versus the baseline's $1.88$, and training past it degrades validation MSE until early stopping fires. The val-period gain of the repaired solution does not transfer across the val/test period shift on this backbone, so early stopping selects a checkpoint that is better on validation and worse on test. TimesNet on m4\_weekly is also the most misspecified cell we tested (MSE $1.93$ against PatchTST's $0.75$), supporting the scope condition: \rfc~is a local repair around a near-optimal backbone, not a fix for gross misspecification.
 
-\paragraph{A lag cell that resists both repairs: concentrated bias.}
-FreTS on Traffic is lag-dominated (residual mean over std $+0.28$) with context-unpredictable bias ($R^2 = -0.2$), and by the routing rule it should be repairable. It is not: the region weight degrades MSE by $0.9 \pm 0.1\%$ across three seeds, and MAE by $4.7\%$. Checkpoint selection is not the mechanism here---validation MSE under the reweighted objective sits above the baseline at every epoch, so the reweighted objective optimizes uniformly worse. The geometric account is that this cell has no uniform shift to remove: anchor-side occupancy is near-symmetric ($0.47$ under- versus $0.40$ over-shoot), and the signed bias concentrates in a minority of windows (the top decile carries $59\%$ of the total, versus $11$--$18\%$ on the repairable m4\_weekly cells). Together with the TimesNet cell above, the boundary of the lag branch is bias that is context-unpredictable, broad-based across windows, and carried by a near-optimal backbone.
+\paragraph{The sign-rule exception: no dominant under-shoot region.}
+FreTS on Traffic is the one dispersion cell where the gap's sign prediction fails: gap $+0.013$, yet the region weight degrades MSE by $0.9 \pm 0.1\%$ across three seeds, and MAE by $4.7\%$. Checkpoint selection is not the mechanism---validation MSE under the reweighted objective sits above the baseline at every epoch, so the reweighted objective optimizes uniformly worse. The geometric account is that the repair has no region to act on: anchor-side occupancy is near-symmetric ($0.47$ under- versus $0.40$ over-shoot, against $\ge 0.55$ under-shoot on every improving dispersion cell), so the under-shoot up-weighting barely shifts the gradient balance, and the signed bias concentrates in a minority of windows (the top decile carries $59\%$ of the total, versus $11$--$18\%$ on the repairable m4\_weekly cells). Both statistics are computable from a baseline run before any repair is trained, which is what makes the exception diagnosable in advance.
 
 \paragraph{Conditional conformal calibration.}
 Conditioning split-conformal interval width on the predicted volatility bin or change-point probability leaves the width at equal marginal coverage within $0.3\%$ of the unconditional baseline on ETTh1 and ETTm1. The binned descriptor signal carries no extractable width information at this resolution, consistent with the weak volatility ranking below. Selective prediction by ranking, rather than width modulation, is the effective decision use.
@@ -90,12 +90,12 @@ Table~\ref{tab:lagcells} records the boundary datasets, the context-predictabili
 
 \begin{table}[h]
   \small
-  \caption{Boundary cells: dispersion gap, residual asymmetry $t$, context-to-lag regression $R^2$, \rfc~effect, and post-hoc lag-correction effect.}
+  \caption{Boundary cells: dispersion gap, signed residual effect size, context-to-lag regression $R^2$, \rfc~effect, and post-hoc lag-correction effect.}
   \label{tab:lagcells}
   \centering
   \begin{tabular}{lccccc}
     \toprule
-    Dataset & Oracle gap & Residual $t$ & Lag $R^2$ & \rfc~$\Delta$MSE & Lag-corr. $\Delta$MSE \\
+    Dataset & Oracle gap & Resid.\ mean/std & Lag $R^2$ & \rfc~$\Delta$MSE & Lag-corr. $\Delta$MSE \\
     \midrule
     m4\_weekly & $-0.026$ & $+0.11$ & $-9.7$ & $-5.0\%$ & $+0.4\%$ \\
     us\_births/W & $-0.075$ & $+0.31$ & $-0.3$ & $-3.1\%$ & --- \\

@@ -1,0 +1,12 @@
+{
+  "dump": "results/long_term_forecast_solar_96_96_PatchTST_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0",
+  "anchor": "ctxmean",
+  "n_windows": 1657,
+  "pred_len": 96,
+  "channels": 137,
+  "undershoot_rate": 0.6049806487114314,
+  "overshoot_rate": 0.3149873738486139,
+  "wrong_side_rate": 0.08003174800705405,
+  "amp_ratio_std": 0.8313082104148003,
+  "mse": 0.20356563467799782
+}

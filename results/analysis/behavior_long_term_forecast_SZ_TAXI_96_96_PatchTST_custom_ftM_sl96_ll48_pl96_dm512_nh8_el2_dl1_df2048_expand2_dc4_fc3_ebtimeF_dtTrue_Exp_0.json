@@ -1,0 +1,12 @@
+{
+  "dump": "results/long_term_forecast_SZ_TAXI_96_96_PatchTST_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0",
+  "anchor": "ctxmean",
+  "n_windows": 500,
+  "pred_len": 96,
+  "channels": 156,
+  "undershoot_rate": 0.5101251335470085,
+  "overshoot_rate": 0.0802361111111111,
+  "wrong_side_rate": 0.4096386217948718,
+  "amp_ratio_std": 0.48115681283953093,
+  "mse": 0.30278259943943614
+}

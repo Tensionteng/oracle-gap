@@ -1,0 +1,12 @@
+{
+  "dump": "results/long_term_forecast_bizitobs_application_96_96_PatchTST_custom_ftM_sl96_ll48_pl96_dm512_nh8_el2_dl1_df2048_expand2_dc4_fc3_ebtimeF_dtTrue_Exp_0",
+  "anchor": "ctxmean",
+  "n_windows": 1671,
+  "pred_len": 96,
+  "channels": 2,
+  "undershoot_rate": 0.5500261819269898,
+  "overshoot_rate": 0.23499526231797327,
+  "wrong_side_rate": 0.2149785557550369,
+  "amp_ratio_std": 0.6749564025898555,
+  "mse": 0.5400074696192102
+}

@@ -1,0 +1,82 @@
+{
+ "ECL": {
+  "bias": 0.006765981670469046,
+  "top10_abs_share": 0.30932295322418213,
+  "top10_signed_share": 5.887808799743652
+ },
+ "traffic-PatchTST": {
+  "bias": 9.406216122442856e-05,
+  "top10_abs_share": 0.3995990455150604,
+  "top10_signed_share": 230.02947998046875
+ },
+ "traffic-iTransformer": {
+  "bias": -5.249358218861744e-05,
+  "top10_abs_share": 0.34888285398483276,
+  "top10_signed_share": NaN
+ },
+ "traffic-FreTS": {
+  "bias": 0.039906442165374756,
+  "top10_abs_share": 0.30685725808143616,
+  "top10_signed_share": 0.5874703526496887
+ },
+ "solar": {
+  "bias": -0.02650604210793972,
+  "top10_abs_share": 0.2362525910139084,
+  "top10_signed_share": NaN
+ },
+ "SZTAXI": {
+  "bias": 0.047163575887680054,
+  "top10_abs_share": 0.2528413236141205,
+  "top10_signed_share": 0.2843072712421417
+ },
+ "SWaT": {
+  "bias": -0.036550372838974,
+  "top10_abs_share": 0.2327643483877182,
+  "top10_signed_share": NaN
+ },
+ "bizobs": {
+  "bias": 0.04869707301259041,
+  "top10_abs_share": 0.30222710967063904,
+  "top10_signed_share": 0.5527187585830688
+ },
+ "weather": {
+  "bias": 0.05160156264901161,
+  "top10_abs_share": 0.2893016040325165,
+  "top10_signed_share": 0.8652601838111877
+ },
+ "ETTh1": {
+  "bias": -0.006049215793609619,
+  "top10_abs_share": 0.24989745020866394,
+  "top10_signed_share": NaN
+ },
+ "ETTm1": {
+  "bias": 0.034304432570934296,
+  "top10_abs_share": 0.28523755073547363,
+  "top10_signed_share": 1.7932779788970947
+ },
+ "m4w": {
+  "bias": 0.10976031422615051,
+  "top10_abs_share": 0.17664705216884613,
+  "top10_signed_share": 0.1804395467042923
+ },
+ "m4w-FreTS": {
+  "bias": 0.29793503880500793,
+  "top10_abs_share": 0.1118486225605011,
+  "top10_signed_share": 0.1118486225605011
+ },
+ "m4w-TimesNet": {
+  "bias": 0.30587711930274963,
+  "top10_abs_share": 0.11150740832090378,
+  "top10_signed_share": 0.11150740832090378
+ },
+ "usbirths": {
+  "bias": 0.3078778088092804,
+  "top10_abs_share": 0.2727508246898651,
+  "top10_signed_share": 0.4333629906177521
+ },
+ "sauge": {
+  "bias": 0.2360093891620636,
+  "top10_abs_share": 0.2668643593788147,
+  "top10_signed_share": 0.48732054233551025
+ }
+}

@@ -65,6 +65,12 @@ GRID = [
      TSLIB + '/dataset/traffic/', 'traffic.csv', 'custom', '-0.9%'),
     ('solar', 'long_term_forecast_solar_96_96_PatchTST_custom_*_Exp_0',
      ROOT + '/gapbench/csv/', 'solar_H.csv', 'custom', '-3.4%'),
+    ('SWaT', 'long_term_forecast_swat_96_96_PatchTST_custom_*_Exp_0',
+     ROOT + '/data/swat/', 'swat.csv', 'custom', '+0.1%'),
+    ('bizobs', 'long_term_forecast_bizitobs_application_96_96_PatchTST_custom_*_Exp_0',
+     ROOT + '/gapbench/csv/', 'bizitobs_application_10S.csv', 'custom', '-1.7%'),
+    ('weather', 'long_term_forecast_weather_96_96_PatchTST_custom_*_Exp_0',
+     TSLIB + '/dataset/weather/', 'weather.csv', 'custom', '+2.5%'),
     ('ETTh1', 'long_term_forecast_ETTh1_96_96_PatchTST_ETTh1_*_Exp_0',
      TSLIB + '/dataset/ETT-small/', 'ETTh1.csv', 'ETTh1', None),
     ('ETTm1', 'long_term_forecast_ETTm1_96_96_PatchTST_ETTm1_*_Exp_0',
@@ -121,9 +127,10 @@ def main():
         X = context_features(xs)
         n_tr = int(len(X) * 0.6)
         sc = StandardScaler().fit(X[:n_tr])
+        Z = np.nan_to_num(sc.transform(X))  # constant context features (e.g. dead channels) -> 0
         r2 = float(r2_score(
             r_mean[n_tr:],
-            Ridge(alpha=1.0).fit(sc.transform(X[:n_tr]), r_mean[:n_tr]).predict(sc.transform(X[n_tr:]))))
+            Ridge(alpha=1.0).fit(Z[:n_tr], r_mean[:n_tr]).predict(Z[n_tr:])))
         gap = amp_gap(pred, true, xs.mean(axis=1, keepdims=True))
         rows.append({'dataset': name, 'n_windows': int(len(pred)),
                      'mse': float((resid ** 2).mean()), 'resid_t': t_stat,

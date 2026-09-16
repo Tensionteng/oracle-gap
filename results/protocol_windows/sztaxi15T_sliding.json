@@ -1,0 +1,7 @@
+{
+  "gap": -0.015,
+  "gap_ci95": 0.0,
+  "estimator": "gap.py (instance-normalized, 20 reps)",
+  "model": "canonical TSLib PatchTST (w0/h0)",
+  "note": "tab:windows reconciliation, round-4"
+}
