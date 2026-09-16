@@ -105,6 +105,27 @@ Table~\ref{tab:lagcells} records the boundary datasets, the context-predictabili
   \end{tabular}
 \end{table}
 
+\paragraph{Decision-side probe across datasets.}
+Table~\ref{tab:decision} extends the selective-prediction probe of Section~\ref{sec:decision} beyond ETT, ranking test windows by each candidate signal and abstaining on the highest-risk quintile (coverage $0.8$). The descriptor head's best channel is worth deploying exactly where the free context-volatility ranking fails.
+
+\begin{table}[h]
+  \small
+  \caption{Selective prediction at coverage $0.8$ (PatchTST with descriptor head, $w{=}0.1$): remaining-MSE change when abstaining on the top-risk quintile by each ranking signal. The descriptor pays off exactly where context volatility cannot rank errors.}
+  \label{tab:decision}
+  \centering
+  \begin{tabular}{lccccc}
+    \toprule
+    Dataset & Desc.\ change point & Desc.\ volatility & Context vol. & Oracle vol. & Better signal \\
+    \midrule
+    ETTh1 & $\mathbf{-2.7\%}$ & $+3.1\%$ & $+0.4\%$ & $-10.2\%$ & descriptor \\
+    ETTm1 & $\mathbf{-5.3\%}$ & $+2.3\%$ & $+1.2\%$ & $-7.2\%$ & descriptor \\
+    Traffic & $+1.1\%$ & $\mathbf{-3.7\%}$ & $+3.2\%$ & $-6.3\%$ & descriptor \\
+    Electricity & $-0.1\%$ & $-5.3\%$ & $-5.4\%$ & $-4.3\%$ & tie \\
+    Weather & $+1.8\%$ & $-4.6\%$ & $\mathbf{-13.9\%}$ & $-22.7\%$ & context \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \paragraph{Backbone-level law check.}
 
 \begin{table}[h]
