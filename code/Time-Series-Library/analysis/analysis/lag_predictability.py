@@ -30,7 +30,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from analysis.oracle_diagnostic import load_inputs, metrics
 
-ROOT = '/mnt/jd/users/tengshiyuan.1/codes/mtp4ts'
+ROOT = '" + os.environ.get("MTP4TS_ROOT", ".") + "'
 TSLIB = os.path.join(ROOT, 'Time-Series-Library')
 
 
