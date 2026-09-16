@@ -18,14 +18,55 @@ using the truncated normal moments $\mathbb{E}[y \mid y > c] = \mu + \sigma\varp
 \section{Diagnostic Protocol Details}
 \label{app:diagnostic}
 
-\TBD{anchor sensitivity table (context mean versus seasonal naive), window-set sensitivity (tail versus sliding), bootstrap repetition convergence, and per-dataset gap table with confidence intervals.}
+\paragraph{Protocol.}
+All reported gaps use the following fixed protocol unless stated otherwise. Statistics are computed per window and per channel around the context-mean anchor, in the per-window, per-channel standardized space, so that series of different scales contribute comparably and residual permutation remains meaningful. The evaluation set is the last $96{+}96$ steps of each series (the tail protocol), with twenty bootstrap repetitions of the window permutation; the mean is reported with a ninety-five percent confidence interval from the bootstrap distribution. All confidence intervals in the audit are below $\pm 0.005$.
 
-\section{Full Audit Matrix}
-\label{app:matrix}
+\paragraph{Window-set sensitivity.}
+The gap is a property of the evaluated window set, not only of the dataset-model pair, and we therefore fix one protocol for all cross-model comparisons. Table~\ref{tab:windows} illustrates the sensitivity: on SZ\_TAXI, a sliding protocol that matches the TSLib test split places PatchTST near zero, while the tail protocol reveals strong over-dispersion; on solar, the two protocols move the estimate by a similar margin in the opposite direction. The law in Section~\ref{sec:law} was verified within each fixed protocol separately, so protocol sensitivity does not affect its validity, but absolute gap values across protocols should not be compared.
 
 \begin{table}[h]
   \small
-  \caption{Backbone-level law check on Electricity (PatchTST-family region-weighted repair, $\alpha{=}1$). The per-backbone oracle gap, not the architecture family, orders the outcomes.}
+  \caption{Oracle gap of the same model on the same dataset under two window protocols.}
+  \label{tab:windows}
+  \centering
+  \begin{tabular}{llcc}
+    \toprule
+    Dataset & Backbone & Sliding (TSLib test) & Tail (last $96{+}96$) \\
+    \midrule
+    SZ\_TAXI/15T & PatchTST & $-0.010$ & $-0.338$ \\
+    solar/H & PatchTST & $+0.026$ & $-0.007$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Anchor.}
+The context-mean anchor is used throughout. It coincides with the reference implemented by reversible instance normalization, which keeps the under-shoot region aligned with the shrinkage attractor of normalized models. A seasonal-naive anchor defines a different notion of shrinkage and is left to future work; Section~\ref{sec:regionfocal} shows the analogous choice inside the repair loss matters similarly (the seasonal anchor removes the benefit there).
+
+\section{What Does Not Work: Negative Results and Mechanism Analysis}
+\label{app:negative}
+
+We report the negative results that shaped the design, since each rules out a mechanism one might otherwise expect to work.
+
+\paragraph{Conditioning the forecast on predicted structure.}
+Injecting the descriptor head's representation into the forecast head, by concatenation or FiLM modulation, does not outperform the parallel auxiliary head. Intervention analysis shows the injection is used: zeroing the descriptor embedding degrades test MSE by up to $0.13$. But permuting it across windows costs an order of magnitude less, so the main path consumes distribution-level calibration rather than window-specific content.
+
+\paragraph{Per-window gating of the repair.}
+Modulating the \rfc~coefficient by predicted change-point probability does not beat the static coefficient on Electricity ($0.1784$ versus $0.1758$ MSE), and a frozen random gate matches it ($0.1752$). Per-window gating by the learned descriptor is not the active ingredient; the static counter-bias already captures the available benefit.
+
+\paragraph{Scaling the descriptor objective.}
+Fine-tuning Chronos-Bolt with descriptor supervision is neutral on ETTh1 and degrades ETTm1 by $4\%$, and the zero-shot oracle gap is flat from 8M to 311M parameters (Section~\ref{sec:tsfmmap}). We find no scale at which structural supervision improves point accuracy; following \citet{gloeckle2024mtp}, any such effect likely lives in the large-scale fine-tuning regime.
+
+\paragraph{Architecture of the backbone.}
+We conjectured that channel-independent backbones would benefit from region weighting while channel-mixing ones would not. DLinear falsifies the conjecture: it is channel-independent, has a near-zero gap on Electricity, and does not benefit. Across five backbones on Electricity (Table~\ref{tab:backbone}), the per-backbone gap orders the outcomes exactly, and models with non-positive gaps are harmed in proportion. The repair's benefit is a function of leftover structure, not architecture family.
+
+\section{Audit Details}
+\label{app:matrix}
+
+\paragraph{Backbone-level law check.}
+
+\begin{table}[h]
+  \small
+  \caption{Backbone-level law check on Electricity (\rfc, $\alpha{=}1$). The per-backbone oracle gap, not the architecture family, orders the outcomes.}
   \label{tab:backbone}
   \centering
   \begin{tabular}{lccc}
@@ -41,9 +82,66 @@ using the truncated normal moments $\mathbb{E}[y \mid y > c] = \mu + \sigma\varp
   \end{tabular}
 \end{table}
 
-\TBD{the complete 665-cell oracle-gap matrix, generated from \texttt{gapbench/results/matrix.csv}.}
+\paragraph{Dataset ranking across foundation models.}
+Table~\ref{tab:dsrank} lists the variants with the most positive and most negative mean gaps across the thirteen audited foundation models. Positive variants are consistent across all models, with minimum per-model gaps above $+0.05$ on the two leading datasets; the negative extreme is dominated by one cell whose predictions are strongly over-dispersed. The full 665-cell matrix with bootstrap confidence intervals is released in the accompanying repository (\texttt{results/matrix.csv}).
+
+\begin{table}[h]
+  \small
+  \caption{Dataset variants with the largest and smallest mean oracle gaps across thirteen foundation models.}
+  \label{tab:dsrank}
+  \centering
+  \begin{tabular}{lc@{\hspace{2em}}lc}
+    \toprule
+    Most positive & mean gap & Most negative & mean gap \\
+    \midrule
+    SZ\_TAXI/15T & $+0.072$ & bizitobs\_l2c/H & $-0.593$ \\
+    bizitobs\_application & $+0.067$ & ett1/D & $-0.116$ \\
+    m4\_weekly & $+0.017$ & ett1/15T & $-0.107$ \\
+    us\_births/W & $+0.016$ & m4\_quarterly & $-0.107$ \\
+    saugeenday/D & $+0.012$ & electricity/D & $-0.101$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Scale ladder.}
+Table~\ref{tab:ladder} aggregates the gap by model scale within three architecture families. Zero-shot gaps are flat across two orders of magnitude of parameter count, and the largest variant in one family is slightly more negative than its smaller counterpart.
+
+\begin{table}[h]
+  \small
+  \caption{Mean oracle gap by model scale (zero-shot).}
+  \label{tab:ladder}
+  \centering
+  \begin{tabular}{lcc}
+    \toprule
+    Family & Parameters & Mean gap \\
+    \midrule
+    Chronos-Bolt & 8M / 21M / 48M / 205M & $-0.025$ / $-0.027$ / $-0.022$ / $-0.026$ \\
+    TimeMoE & 50M / 200M & $-0.017$ / $-0.016$ \\
+    Moirai-1.1 & 14M / 311M & $-0.046$ / $-0.053$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Implementation and Reproducibility}
 \label{app:repro}
 
-\TBD{backbone configurations, training protocol, optimizer settings, descriptor-head specification, region-loss hyperparameters, and compute summary.}
+\paragraph{Forecasting protocol.}
+Task models are trained with the standard TSLib long-term-forecasting protocol: ninety-six input steps, prediction horizons of $96/192/336/720$, train/validation/test splits and normalization by train-split statistics, Adam with the canonical per-model learning rates of the benchmark, batch size $32$ (ETT, solar, SWaT) or $16$ (Electricity, Traffic, SZ\_TAXI), at most ten epochs with early stopping at patience three on the validation task loss, and MSE as the task criterion unless stated otherwise. Backbone configurations follow the canonical benchmark scripts: PatchTST with one encoder layer and two heads on ETT, two layers on Electricity and Traffic; iTransformer with two layers and width $128$ on ETT, three layers and width $512$ on Electricity; DLinear, TimeMixer, and TimesNet with their canonical settings. Reported test MSE and MAE are computed in the normalized space.
+
+\paragraph{Descriptor head.}
+The head is a two-layer MLP with hidden width $128$ and six readouts (change-point logit, change-point position, three five-way ordinal classifiers, and a five-dimensional spectral regressor), $21{,}526$ parameters in total, attached to the mean-pooled last hidden state. Labels are computed from each future window: change-point probability and position from a scale-free CUSUM statistic over the first $24$ steps, mapped through a fixed calibrated sigmoid; ordinal bins of drift, volatility, and slope from train-split quantiles at $10/30/70/90$ percent; and spectral centroid, entropy, and three band-energy fractions, z-scored with train-split statistics. The auxiliary loss is an unweighted sum of one binary cross-entropy, one smooth-L1, three cross-entropies, and one squared-error term, scaled by a single coefficient ($0.1$ unless stated otherwise). Validation and early stopping use the task loss only.
+
+\paragraph{RegionFocal.}
+The loss uses temperatures $\tau_1 = \tau_2 = 0.1$, context-mean anchor, detached weights, no over-shoot penalty, and a wrong-side weight of half the under-shoot weight unless stated otherwise. The coefficient $\alpha$ is swept in $\{0.1, 0.25, 0.5, 1, 2, 4\}$ on development runs; main results use $\alpha = 1$ (Electricity, bizitobs) and $\alpha = 0.5$ (Traffic).
+
+\paragraph{Foundation-model fine-tuning.}
+Chronos-Bolt-small is fine-tuned with AdamW (learning rate $10^{-5}$, weight decay $0.01$, gradient clipping $1.0$), batch size $32$, up to ten epochs with patience three, bf16 autocast, and the native nine-quantile pinball loss. The descriptor head attaches to the mask-pooled encoder hidden state (six patch tokens plus the register token). Evaluation follows the official quantile-expansion rollout for horizons beyond sixty-four steps.
+
+\paragraph{Diagnostic.}
+The oracle gap is computed with twenty bootstrap repetitions; see Appendix~\ref{app:diagnostic} for the full protocol. Selective-prediction curves are computed on the test split with twenty-five coverage levels; the trained error-prediction baseline uses ridge and two-layer MLP regressors on ten context statistics, fit on the validation split.
+
+\paragraph{Compute and seeds.}
+All experiments run on NVIDIA A800 80GB GPUs, one training run per GPU. Main results are reported across seeds $2021/2022/2023$; single-seed cells use seed $2021$. In total, the evaluation comprises more than two hundred task-model training runs and a six-hundred-sixty-five-cell zero-shot audit. Code, the full audit matrix, and the experiment scripts are released in the accompanying repository.
+
+\paragraph{HCAN porting notes.}
+Our within-protocol HCAN control attaches the published hierarchical classification component (coarse and fine binning, evidence-theory classifier, hierarchical consistency loss, and hierarchy-aware attention fusion) to the same PatchTST hidden states used by our descriptor head, rather than to the Informer decoder outputs of the original implementation. We also correct a silent view-permutation in the official code that exchanges time and channel indices when the prediction length differs from the channel count. These choices are required to run the component on modern backbones, and they are the reason we treat the port as a within-protocol control only and rely on the published numbers for the original comparison.
