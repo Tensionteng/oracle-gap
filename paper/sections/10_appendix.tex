@@ -80,21 +80,21 @@ Re-labeling the volatility target in log space does not improve the predicted vo
 \end{figure}
 
 \paragraph{Level-lag cells and the predictability probe.}
-Table~\ref{tab:lagcells} records the boundary datasets and the context-predictability probe that separates repairable lag from model-utilization failure. On every improving cell the lag is not predictable from context statistics (negative $R^2$), while the only context-predictable lag (saugeenday, $R^2 = +0.35$) is the cell the repair cannot help.
+Table~\ref{tab:lagcells} records the boundary datasets, the context-predictability probe that separates repairable lag from model-utilization failure, and the matched post-hoc lag correction. On every cell where the counter-bias helps, the lag is not predictable from context statistics (negative $R^2$); the only context-predictable lag (saugeenday) is the cell the counter-bias cannot help, and it is exactly where the post-hoc correction works. A level-supervision head (predicting the future window mean as an auxiliary target) does not repair saugeenday either ($+3.4\%$) and harms ETTh1 ($+9.2\%$): the mean level is the most extrapolable statistic, so supervising it pulls the representation further toward the conditional mean. Information injection, not auxiliary supervision, is the right instrument for context-predictable lag.
 
 \begin{table}[h]
   \small
-  \caption{Boundary cells: dispersion gap, residual asymmetry $t$, context-to-lag regression $R^2$, and \rfc~effect.}
+  \caption{Boundary cells: dispersion gap, residual asymmetry $t$, context-to-lag regression $R^2$, \rfc~effect, and post-hoc lag-correction effect.}
   \label{tab:lagcells}
   \centering
-  \begin{tabular}{lcccc}
+  \begin{tabular}{lccccc}
     \toprule
-    Dataset & Oracle gap & Residual $t$ & Lag $R^2$ & $\Delta$MSE (\%) \\
+    Dataset & Oracle gap & Residual $t$ & Lag $R^2$ & \rfc~$\Delta$MSE & Lag-corr. $\Delta$MSE \\
     \midrule
-    m4\_weekly & $-0.026$ & $+0.11$ & $-9.7$ & $-5.0$ \\
-    us\_births/W & $-0.075$ & $+0.31$ & $-0.3$ & $-3.1$ \\
-    saugeenday/D & $-0.025$ & $+0.24$ & $+0.35$ & $+1.1$ \\
-    Electricity & $+0.030$ & $+0.01$ & $-1.4$ & $-2.3$ \\
+    m4\_weekly & $-0.026$ & $+0.11$ & $-9.7$ & $-5.0\%$ & $+0.4\%$ \\
+    us\_births/W & $-0.075$ & $+0.31$ & $-0.3$ & $-3.1\%$ & --- \\
+    saugeenday/D & $-0.025$ & $+0.24$ & $+0.35$ & $+1.1\%$ & $-13.2\%$ \\
+    Electricity & $+0.030$ & $+0.01$ & $-1.4$ & $-2.3\%$ & --- \\
     \bottomrule
   \end{tabular}
 \end{table}

@@ -106,7 +106,7 @@ def spectral_features(future, reduce='mean'):
 
 
 def compute_descriptor_targets(future, k, stats, reduce='mean', vol_log=False, vol_ms=False,
-                               vol_qr=False):
+                               vol_qr=False, level=False):
     """Full descriptor target dict for a batch of future windows.
 
     future: [B, L, C]; stats: dict of torch tensors (on the same device) with
@@ -147,4 +147,11 @@ def compute_descriptor_targets(future, k, stats, reduce='mean', vol_log=False, v
     if vol_qr:
         # log-volatility regression target (continuous, replaces the binned CE)
         out['vol_log'] = (vol + _EPS).log()
+    if level:
+        # future-window mean level regression target, z-scored with train stats;
+        # [B, C] channel mode (per-channel temporal mean) / [B] pooled
+        lv = future.mean(dim=1)
+        if reduce == 'mean':
+            lv = lv.mean(dim=1)
+        out['level'] = (lv - stats['level_mean' + suffix]) / (stats['level_std' + suffix] + _EPS)
     return out

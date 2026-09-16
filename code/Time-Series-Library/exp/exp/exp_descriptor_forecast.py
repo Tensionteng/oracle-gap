@@ -129,7 +129,8 @@ class Exp_Descriptor_Forecast(Exp_Long_Term_Forecast):
                                                  reduce=None if channel_mode else 'mean',
                                                  vol_log=bool(getattr(self.args, 'vol_log', 0)),
                                                  vol_ms=bool(getattr(self.args, 'vol_ms', 0)),
-                                                 vol_qr=bool(getattr(self.args, 'vol_qr', 0)))
+                                                 vol_qr=bool(getattr(self.args, 'vol_qr', 0)),
+                                                 level=bool(getattr(self.args, 'desc_level', 0)))
             if getattr(self.args, 'desc_shuffle', 0):
                 # negative control: one shared batch-dim permutation for all
                 # descriptor targets, severing the sample<->label link while
@@ -155,6 +156,9 @@ class Exp_Descriptor_Forecast(Exp_Long_Term_Forecast):
                     mid = mid + F.cross_entropy(aux['vol_near'].reshape(-1, n_bins),
                                                 targets['vol_near_cls'].reshape(-1))
                 loss = mid if loss is None else loss + mid
+            if getattr(self.args, 'desc_level', 0):
+                lv = F.mse_loss(aux['level'], targets['level'])
+                loss = lv if loss is None else loss + lv
             if 'far' in self.desc_scales:
                 far = F.mse_loss(aux['spectral'], targets['spectral'])
                 loss = far if loss is None else loss + far
