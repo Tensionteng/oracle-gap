@@ -5,11 +5,11 @@
 
 Where the oracle gap is non-positive, over-smoothing cannot be repaired, but the model can still report when its forecast is likely to degrade. We attach a shallow head (21K parameters, under 1\% of the backbone's parameter count) to the last hidden state of the forecaster, and train it jointly to predict a set of structural descriptors of the future window: the probability and position of an imminent change point, ordinal bins of drift, volatility, and trend slope, and a five-dimensional spectral summary. All labels are computed from the future window at training time and cost no annotation.
 
-\subsection{Descriptor supervision does not repair point accuracy at small scale}
+\paragraph{Descriptor supervision does not repair point accuracy at small scale.}
 
 The head improves point MSE only marginally and only in specific cells: at best about one percent on PatchTST on ETTm1, with no reliable gain elsewhere and a negative effect when fine-tuning a 48M foundation model (mechanism analysis in Appendix~\ref{app:negative}). Most windows in these datasets are in the rational-shrinkage regime, so representation shaping has little bias to remove.
 
-\subsection{The descriptor output is a reliable forward-looking risk signal}
+\paragraph{The descriptor output is a reliable forward-looking risk signal.}
 
 Although the head does not improve the forecast, its change-point output predicts the forecast's error. Ranking test windows by predicted change-point probability and abstaining on the top quintile reduces the remaining MSE by 2.7\% on ETTh1 and 5.3\% on ETTm1. The signal outperforms random ranking ($+0.2\%$), ranking by context volatility ($+0.4\%$ and $+1.2\%$, actively harmful), and ranking by the true change-point label computed from the realized future ($-1.6\%$ and $-4.5\%$). Against a trained error-prediction baseline (ridge and MLP regressors on context statistics, fit on the validation split), the descriptor signal wins clearly on ETTh1 ($-2.7\%$ versus at best $-0.3\%$) and ties the strongest baseline on ETTm1, while requiring no validation data and no additional training. The head's smoothed probabilities also rank windows more reliably than the noisy realized labels, which suggests it has learned a generalizable structural signal rather than memorized targets. Figure~\ref{fig:riskcov} shows the full risk-coverage curves.
 
@@ -17,8 +17,8 @@ The same signal transfers to a fine-tuned foundation model at no extra cost. On 
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.95\linewidth,height=3.0cm,keepaspectratio]{figures/fig_riskcov.pdf}
-  \caption{Risk-coverage curves. Ranking by predicted change-point probability (blue) reduces remaining MSE monotonically and beats oracle change-point ranking (gray), context volatility (red), and random ranking (dashed); oracle volatility (black) marks the exploitable upper bound.}
+  \includegraphics[width=\linewidth]{figures/fig_riskcov.pdf}
+  \caption{Risk-coverage curves on ETTh1, ETTm1, and a fine-tuned Chronos-Bolt. Ranking by predicted change-point probability (blue) reduces remaining MSE monotonically and beats oracle change-point ranking (gray), context volatility (red), and random ranking (dashed); oracle volatility (black) marks the exploitable upper bound. The descriptor signal survives the model-family transfer and on the fine-tuned foundation model exceeds even the oracle-volatility bound on ETTm1.}
   \label{fig:riskcov}
 \end{figure}
 

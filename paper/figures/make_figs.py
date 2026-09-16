@@ -54,9 +54,12 @@ signals = [('pred_cp', 'Predicted change-point prob. (ours)', '#0072B2', '-'),
            ('oracle_vol', 'Oracle volatility (upper bound)', '#000000', '-')]
 panels = [('ETTh1', os.path.join(ROOT, 'Time-Series-Library/analysis/results/errcorr_ETTh1_patch_descw01_curves.npz')),
           ('ETTm1', os.path.join(ROOT, 'Time-Series-Library/analysis/results/errcorr_ETTm1_patch_descw01_curves.npz'))]
+bolt_json = [('Chronos-Bolt ft ETTh1', os.path.join(ROOT, 'tsfm_stage2/results/errcorr_bolt_ETTh1.json')),
+             ('Chronos-Bolt ft ETTm1', os.path.join(ROOT, 'tsfm_stage2/results/errcorr_bolt_ETTm1.json'))]
 
-fig, axes = plt.subplots(1, 2, figsize=(7.6, 2.6), sharey=True)
-for ax, (name, path) in zip(axes, panels):
+import json as _json
+fig, axes = plt.subplots(1, 3, figsize=(10.2, 2.2), sharey=True)
+for ax, (name, path) in zip(axes[:2], panels):
     z = np.load(path)
     cov = z['coverage']
     for key, label, color, ls in signals:
@@ -69,8 +72,23 @@ for ax, (name, path) in zip(axes, panels):
     ax.set_xlabel('Coverage', fontsize=8)
     ax.tick_params(labelsize=7)
 axes[0].set_ylabel('Remaining MSE (relative)', fontsize=8)
-axes[0].invert_xaxis()
-axes[1].invert_xaxis()
+for ax, (name, path) in zip([axes[2]], bolt_json[:1] + bolt_json[1:]):
+    pass
+axb = axes[2]
+for name, path in bolt_json:
+    d = _json.load(open(path))
+    cov = np.array(d['coverage_grid'], dtype=float)
+    for key, lab, col in [('pred_cp', 'Predicted change-point prob. (ours)', '#0072B2'),
+                          ('ctx_vol', 'Context volatility (static)', '#D55E00'),
+                          ('oracle_vol', 'Oracle volatility (upper bound)', '#000000')]:
+        c = np.array(d['curves'][key], dtype=float)
+        axb.plot(cov, c / c[0], label=f"{lab.split(' (')[0]} ({name.split(' ')[-1]})", color=col,
+                 ls='-' if 'ETTh1' in name else '--', lw=1.5)
+axb.set_title('Chronos-Bolt fine-tuned', fontsize=9)
+axb.set_xlabel('Coverage', fontsize=8)
+axb.tick_params(labelsize=7)
+axb.legend(fontsize=6, loc='upper right', frameon=False)
+for ax in axes: ax.invert_xaxis()
 axes[1].legend(fontsize=6.5, loc='upper right', frameon=False)
 plt.tight_layout()
 fig.savefig(f'{OUT}/fig_riskcov.pdf')

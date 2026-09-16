@@ -106,6 +106,7 @@ def main():
               'n_windows': int(len(err)), 'mse_overall': float(err.mean()),
               'spearman_vs_window_mse': {k: float(spearmanr(v, err).statistic) for k, v in signals.items()},
               'remaining_mse_at_cov08': {k: at_cov(curves[k]) for k in curves},
+              'curves': {k: curves[k] for k in curves},
               'coverage_grid': grid.tolist()}
     print('Spearman (signal vs window MSE):')
     for k, v in result['spearman_vs_window_mse'].items():
