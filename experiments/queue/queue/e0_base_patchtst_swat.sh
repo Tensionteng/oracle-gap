@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd /mnt/jd/users/tengshiyuan.1/codes/mtp4ts/Time-Series-Library
+uv run python -u run.py \
+  --num_workers 3 \
+  --task_name long_term_forecast \
+  --is_training 1 \
+  --root_path /mnt/jd/users/tengshiyuan.1/codes/mtp4ts/data/swat/ \
+  --data_path swat.csv \
+  --model_id swat_96_96 \
+  --model PatchTST \
+  --data custom \
+  --features M \
+  --target P603 \
+  --freq t \
+  --seq_len 96 \
+  --label_len 48 \
+  --pred_len 96 \
+  --e_layers 2 \
+  --d_layers 1 \
+  --factor 3 \
+  --enc_in 51 \
+  --dec_in 51 \
+  --c_out 51 \
+  --des 'Exp' \
+  --batch_size 16 \
+  --itr 1

@@ -169,6 +169,12 @@ if __name__ == '__main__':
                         help='cascade conditioning of the main forecast path on the descriptor representation z (requires aux_head=desc)')
     parser.add_argument('--desc_scales', type=str, default='near,mid,far',
                         help='comma-separated descriptor loss terms: near (cp_prob+cp_pos), mid (drift+vol+slope), far (spectral)')
+    parser.add_argument('--vol_log', type=int, default=0,
+                        help='bin the volatility descriptor in log space (fixes the right-skewed raw-vol binning)')
+    parser.add_argument('--vol_ms', type=int, default=0,
+                        help='multi-scale volatility: add a near-window (first desc_k steps) vol bin head alongside the full-window one')
+    parser.add_argument('--vol_qr', type=int, default=0,
+                        help='replace the 5-bin volatility classification with a continuous log(vol) regression head (MSE)')
     parser.add_argument('--num_coarse', type=int, default=2, help='HCAN coarse bins')
     parser.add_argument('--num_fine', type=int, default=4, help='HCAN fine bins')
     parser.add_argument('--hcan_hidden', type=int, default=512, help='HCAN branch hidden dim (hidden_dim in the paper)')

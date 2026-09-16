@@ -66,7 +66,7 @@ We conjectured that channel-independent backbones would benefit from region weig
 Conditioning split-conformal interval width on the predicted volatility bin or change-point probability leaves the width at equal marginal coverage within $0.3\%$ of the unconditional baseline on ETTh1 and ETTm1. The binned descriptor signal carries no extractable width information at this resolution, consistent with the weak volatility ranking below. Selective prediction by ranking, rather than width modulation, is the effective decision use.
 
 \paragraph{Volatility-signal repair.}
-Re-labeling the volatility target in log space (fixing the right-skewed label distribution) does not improve the predicted volatility ranking either: the risk-coverage effect at coverage $0.8$ moves from $+3.1\%$ to $+1.9\%$ on ETTh1 and from $+2.3\%$ to $+1.0\%$ on ETTm1, still worse than random. The volatility head remains the open weakness noted in Section~\ref{sec:decision}.
+Re-labeling the volatility target in log space does not improve the predicted volatility ranking: the risk-coverage effect at coverage $0.8$ moves from $+3.1\%$ to $+1.9\%$ on ETTh1 and from $+2.3\%$ to $+1.0\%$ on ETTm1, still worse than random. Replacing the binned classification target with a continuous log-volatility regression finally turns the signal usable on ETTm1 ($-1.7\%$ at coverage $0.8$, Spearman $+0.03$), but all four variants fail on ETTh1, where the volatility component of the error is not recoverable from the pooled representation. The change-point channel therefore remains the primary decision signal, and volatility remains an open problem except in the continuous form on ETTm1.
 
 \section{Audit Details}
 \label{app:matrix}
@@ -79,21 +79,22 @@ Re-labeling the volatility target in log space (fixing the right-skewed label di
   \label{fig:mapfull}
 \end{figure}
 
-\paragraph{Level-lag cells.}
-Table~\ref{tab:lagcells} records the three datasets that probe the boundary of the dispersion-based law. On trending series, level lag (one-sided residuals) rather than dispersion shrinkage dominates the model's bias, and the repair corrects that lag; the dispersion gap does not see this structure type.
+\paragraph{Level-lag cells and the predictability probe.}
+Table~\ref{tab:lagcells} records the boundary datasets and the context-predictability probe that separates repairable lag from model-utilization failure. On every improving cell the lag is not predictable from context statistics (negative $R^2$), while the only context-predictable lag (saugeenday, $R^2 = +0.35$) is the cell the repair cannot help.
 
 \begin{table}[h]
   \small
-  \caption{Boundary cells: dispersion gap, residual asymmetry $t = \mathrm{mean}(\mathrm{resid})/\mathrm{std}(\mathrm{resid})$, and \rfc~effect.}
+  \caption{Boundary cells: dispersion gap, residual asymmetry $t$, context-to-lag regression $R^2$, and \rfc~effect.}
   \label{tab:lagcells}
   \centering
-  \begin{tabular}{lccc}
+  \begin{tabular}{lcccc}
     \toprule
-    Dataset & Oracle gap & Residual $t$ & $\Delta$MSE (\%) \\
+    Dataset & Oracle gap & Residual $t$ & Lag $R^2$ & $\Delta$MSE (\%) \\
     \midrule
-    m4\_weekly & $-0.026$ & $+0.11$ & $-5.0$ \\
-    us\_births/W & $-0.075$ & $+0.31$ & $-3.1$ \\
-    saugeenday/D & $-0.025$ & $+0.24$ & $+1.1$ \\
+    m4\_weekly & $-0.026$ & $+0.11$ & $-9.7$ & $-5.0$ \\
+    us\_births/W & $-0.075$ & $+0.31$ & $-0.3$ & $-3.1$ \\
+    saugeenday/D & $-0.025$ & $+0.24$ & $+0.35$ & $+1.1$ \\
+    Electricity & $+0.030$ & $+0.01$ & $-1.4$ & $-2.3$ \\
     \bottomrule
   \end{tabular}
 \end{table}
