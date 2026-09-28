@@ -1,4 +1,4 @@
-# Not All Smoothness Is Fixable
+# Not All Smoothness Is Fixable — Code & Artifacts
 
 **Diagnosing and Conditionally Repairing Over-Smoothing in Time Series Forecasting**
 
@@ -12,11 +12,6 @@ Point forecasts trained with MSE are systematically smoother than the series the
 ## Repository structure
 
 ```
-paper/                 LaTeX source of the paper (ICLR 2027 style)
-  main.tex             entry point
-  sections/            per-section sources
-  figures/             figure PDFs + make_figs.py (regenerates from results/)
-  refs.bib             bibliography (all entries verified against DBLP/arXiv)
 code/
   Time-Series-Library/ experiment workbench (TSLib fork) with:
                          utils/descriptor_labels.py, utils/region_focal.py,
@@ -25,16 +20,24 @@ code/
                          exp/exp_descriptor_forecast.py,
                          analysis/{oracle_diagnostic,behavior_metrics,probe_descriptor,
                                    gain_localization,error_correlation,...}.py
-  tsfm_stage2/         Chronos-Bolt fine-tuning harness (finetune_chronos_bolt.py)
+  tsfm_stage2/         Chronos-Bolt fine-tuning harness (finetune_chronos_bolt.py,
+                         errcorr_bolt.py: selective-prediction analysis incl. volatility channel)
   gapbench/            GIFT-Eval adapter + TSFM zero-shot dump + oracle-gap scanner
 experiments/
-  queue/               all experiment job scripts (~230 runs, bash, single-GPU each)
+  queue/               all experiment job scripts (~230 runs, bash, single-GPU each),
+                         incl. f0_fredf_* (cross-intervention check) and x*_tsfm_* (bolt
+                         decision-side transfer)
+  staged_x/            pre-registered predictions and outcome of the x-series
   tools/               scheduler.py (GPU queue scheduler), gpu_monitor.sh
   results.csv          master results table of all task-model runs
 results/
   matrix.csv           the 665-cell oracle-gap audit matrix
-  analysis/            probe / behavior / gain-localization / error-correlation JSONs
+  protocol_windows/    oracle gap under sliding vs tail window protocols
+  analysis/            probe / behavior / gain-localization / error-correlation JSONs,
+                         incl. errcorr_bolt_* (fine-tuned Chronos-Bolt selective prediction)
 ```
+
+The LaTeX source of the paper lives in the companion paper-archive repository.
 
 ## Reproduce
 

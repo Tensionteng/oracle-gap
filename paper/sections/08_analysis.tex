@@ -1,7 +1,0 @@
-\section{Discussion and Conclusion}
-\label{sec:discussion}
-
-\paragraph{Limitations.}
-Positive repair evidence concentrates on positive-gap or lag-positive pairs, and several natural mechanisms for exploiting future-structure information do not work (Appendix~\ref{app:negative}): conditioning the forecast on predicted structure, per-window gating, scaling descriptor supervision to foundation-model fine-tuning, and supervising the future mean level. The descriptor's volatility channel is much weaker than its change-point channel. All experiments are point-forecasting; distributional extension is the natural next step.
-
-Over-smoothing is not one phenomenon but two: rational shrinkage is the price of honest uncertainty; unexploited structure is repairable. The oracle gap tells them apart cheaply and predicts when anti-smoothing pays (14 of 15 cells, the exception diagnosable in advance): where it pays, a region-weighted loss recovers part of the structure; where not, a descriptor head reports when the forecast deserves trust.
