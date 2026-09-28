@@ -45,7 +45,7 @@ The LaTeX source of the paper lives in the companion paper-archive repository.
 2. **Data**: forecasting benchmarks (ETT, Electricity, Traffic, Weather, SWaT, etc.) via the TSLib dataset release; GIFT-Eval datasets via Hugging Face `Salesforce/GiftEval`. Set `MTP4TS_ROOT` (repo root) and `GIFT_ROOT` (GIFT-Eval cache) environment variables.
 3. **Oracle gap on your own model**: produce `pred.npy`/`true.npy` ([N, horizon, C]) for a test split, then run `analysis/oracle_diagnostic.py` (see its docstring).
 4. **RegionFocal**: see `code/Time-Series-Library/utils/region_focal.py`; training entry `run.py --task_loss regionfocal --rf_au 1.0`.
-5. **Figures**: `paper/figures/make_figs.py` regenerates both figures from `results/`.
+5. **Figures**: `paper/figures/make_figs.py` (in the companion paper repo) regenerates both figures from `results/`.
 
 ## Key experiment artifacts
 
@@ -58,4 +58,4 @@ The LaTeX source of the paper lives in the companion paper-archive repository.
 ## Notes
 
 - We release the audit matrix and diagnostic code so the oracle gap can become a standard column in forecasting evaluations.
-- Model checkpoints and datasets are not included (size); all numbers in `results/` and `paper/` were produced by the scripts in this repository.
+- Model checkpoints and datasets are not included (size); all numbers in `results/` were produced by the scripts in this repository.
