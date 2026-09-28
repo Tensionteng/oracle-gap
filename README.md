@@ -37,7 +37,7 @@ results/
                          incl. errcorr_bolt_* (fine-tuned Chronos-Bolt selective prediction)
 ```
 
-The LaTeX source of the paper lives in the companion paper-archive repository.
+The LaTeX source of the paper lives in the companion paper-archive repository: [Tensionteng/Not-All-Smoothness-Is-Fixable](https://github.com/Tensionteng/Not-All-Smoothness-Is-Fixable).
 
 ## Reproduce
 
