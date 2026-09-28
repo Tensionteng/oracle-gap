@@ -18,7 +18,7 @@ import os
 
 import numpy as np
 
-TSLIB = '" + os.environ.get("MTP4TS_ROOT", ".") + "/Time-Series-Library'
+TSLIB = '/mnt/jd/users/tengshiyuan.1/codes/mtp4ts/Time-Series-Library'
 
 
 def build_test_inputs(csv_path, seq_len, pred_len):

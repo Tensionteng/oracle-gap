@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd ${MTP4TS_ROOT}/tsfm_stage2
+cd /mnt/jd/users/tengshiyuan.1/codes/mtp4ts/tsfm_stage2
 export HF_HUB_OFFLINE=1
 uv run python -u finetune_chronos_bolt.py \
   --data ETTm1 \

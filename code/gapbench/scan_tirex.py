@@ -12,7 +12,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from scan_common import scan_cells, load_cells, write_load_fail
 
-MODEL_CKPT = '" + os.environ.get("MTP4TS_ROOT", ".") + "/models/tirex/model.ckpt'
+MODEL_CKPT = '/mnt/jd/users/tengshiyuan.1/codes/mtp4ts/models/tirex/model.ckpt'
 
 
 def load_tirex():

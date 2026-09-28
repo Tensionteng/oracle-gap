@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd ${MTP4TS_ROOT}/Time-Series-Library
+cd /mnt/jd/users/tengshiyuan.1/codes/mtp4ts/Time-Series-Library
 uv run python -u run.py \
   --num_workers 2 \
   --task_name long_term_forecast \
   --is_training 1 \
-  --root_path ${MTP4TS_ROOT}/gapbench/csv/ \
+  --root_path /mnt/jd/users/tengshiyuan.1/codes/mtp4ts/gapbench/csv/ \
   --data_path SZ_TAXI_15T.csv \
   --model_id SZ_TAXI_96_96 \
   --model PatchTST \

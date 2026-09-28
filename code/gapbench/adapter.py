@@ -25,7 +25,7 @@ import os
 
 import numpy as np
 
-GIFT_ROOT = '" + os.environ.get("GIFT_ROOT", "data/gifteval") + "'
+GIFT_ROOT = '/mnt/jd/users/tengshiyuan.1/codes/non-stationary-ts/tsfm_missing/data/gifteval'
 MIN_INPUT_STD = 1e-6  # below this the per-window normalization is degenerate
 
 

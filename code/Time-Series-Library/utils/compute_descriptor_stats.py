@@ -44,6 +44,8 @@ def compute_descriptor_stats(args):
     f_dim = -1 if args.features == 'MS' else 0
     scores, drifts, vols, slopes, specs = [], [], [], [], []
     drifts_ch, vols_ch, slopes_ch, specs_ch = [], [], [], []
+    vols_near, vols_near_ch = [], []
+    levels, levels_ch = [], []
     with torch.no_grad():
         for batch_x, batch_y, batch_x_mark, batch_y_mark in train_loader:
             future = batch_y[:, -args.pred_len:, f_dim:].float()
@@ -62,6 +64,14 @@ def compute_descriptor_stats(args):
             vols_ch.append(vol_c.reshape(-1).numpy())
             slopes_ch.append(slope_c.reshape(-1).numpy())
             specs_ch.append(spec_c.reshape(-1, spec_c.shape[-1]).numpy())
+            # near-window volatility (for --vol_ms)
+            k_near = max(min(args.desc_k, future.shape[1]), 2)
+            vn = future[:, :k_near, :].diff(dim=1).std(dim=1, unbiased=False)
+            vols_near.append(vn.mean(dim=1).numpy())
+            vols_near_ch.append(vn.reshape(-1).numpy())
+            lv = future.mean(dim=1)
+            levels.append(lv.mean(dim=1).numpy())
+            levels_ch.append(lv.reshape(-1).numpy())
     scores = np.concatenate(scores)
     drifts = np.concatenate(drifts)
     vols = np.concatenate(vols)
@@ -71,17 +81,29 @@ def compute_descriptor_stats(args):
     vols_ch = np.concatenate(vols_ch)
     slopes_ch = np.concatenate(slopes_ch)
     specs_ch = np.concatenate(specs_ch, axis=0)
+    vols_near = np.concatenate(vols_near)
+    vols_near_ch = np.concatenate(vols_near_ch)
+    levels = np.concatenate(levels)
+    levels_ch = np.concatenate(levels_ch)
 
     stats = {
         'cp_score_q': np.quantile(scores, _CP_QUANTILES).astype(np.float32),
         'cp_score_edges': np.quantile(scores, _CP_EDGE_QUANTILES).astype(np.float32),
         'drift_edges': np.quantile(drifts, _EDGE_QUANTILES).astype(np.float32),
         'vol_edges': np.quantile(vols, _EDGE_QUANTILES).astype(np.float32),
+        'vol_log_edges': np.quantile(np.log(vols + 1e-8), _EDGE_QUANTILES).astype(np.float32),
+        'vol_near_edges': np.quantile(vols_near, _EDGE_QUANTILES).astype(np.float32),
+        'level_mean': np.float32(levels.mean()),
+        'level_std': np.float32(levels.std() + 1e-8),
         'slope_edges': np.quantile(slopes, _EDGE_QUANTILES).astype(np.float32),
         'spec_mean': specs.mean(axis=0).astype(np.float32),
         'spec_std': specs.std(axis=0).astype(np.float32),
         'drift_edges_ch': np.quantile(drifts_ch, _EDGE_QUANTILES).astype(np.float32),
         'vol_edges_ch': np.quantile(vols_ch, _EDGE_QUANTILES).astype(np.float32),
+        'vol_log_edges_ch': np.quantile(np.log(vols_ch + 1e-8), _EDGE_QUANTILES).astype(np.float32),
+        'vol_near_edges_ch': np.quantile(vols_near_ch, _EDGE_QUANTILES).astype(np.float32),
+        'level_mean_ch': np.float32(levels_ch.mean()),
+        'level_std_ch': np.float32(levels_ch.std() + 1e-8),
         'slope_edges_ch': np.quantile(slopes_ch, _EDGE_QUANTILES).astype(np.float32),
         'spec_mean_ch': specs_ch.mean(axis=0).astype(np.float32),
         'spec_std_ch': specs_ch.std(axis=0).astype(np.float32),
@@ -99,7 +121,9 @@ def compute_descriptor_stats(args):
 
 REQUIRED_KEYS = ('cp_score_q', 'cp_score_edges', 'drift_edges', 'vol_edges', 'slope_edges',
                  'spec_mean', 'spec_std', 'drift_edges_ch', 'vol_edges_ch', 'slope_edges_ch',
-                 'spec_mean_ch', 'spec_std_ch')
+                 'spec_mean_ch', 'spec_std_ch', 'vol_log_edges', 'vol_log_edges_ch',
+                 'vol_near_edges', 'vol_near_edges_ch',
+                 'level_mean', 'level_std', 'level_mean_ch', 'level_std_ch')
 
 
 def ensure_descriptor_stats(args):

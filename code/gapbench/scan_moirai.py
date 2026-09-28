@@ -17,7 +17,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from scan_common import scan_cells, load_cells, write_load_fail
 
-MODELS_DIR = '" + os.environ.get("MTP4TS_ROOT", ".") + "/models'
+MODELS_DIR = '/mnt/jd/users/tengshiyuan.1/codes/mtp4ts/models'
 NUM_SAMPLES = 20
 
 

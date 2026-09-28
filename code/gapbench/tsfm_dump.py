@@ -24,7 +24,7 @@ import torch
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--windows', required=True)
-    ap.add_argument('--model_path', default='" + os.environ.get("MTP4TS_ROOT", ".") + "/models/chronos-bolt-small')
+    ap.add_argument('--model_path', default='/mnt/jd/users/tengshiyuan.1/codes/mtp4ts/models/chronos-bolt-small')
     ap.add_argument('--out', required=True)
     ap.add_argument('--chunk', type=int, default=4096)
     ap.add_argument('--tag', default='')

@@ -105,7 +105,8 @@ def spectral_features(future, reduce='mean'):
     return feats                                                      # [B, C, 5]
 
 
-def compute_descriptor_targets(future, k, stats, reduce='mean'):
+def compute_descriptor_targets(future, k, stats, reduce='mean', vol_log=False, vol_ms=False,
+                               vol_qr=False, level=False):
     """Full descriptor target dict for a batch of future windows.
 
     future: [B, L, C]; stats: dict of torch tensors (on the same device) with
@@ -113,7 +114,11 @@ def compute_descriptor_targets(future, k, stats, reduce='mean'):
     spec_std ([5] z-score parameters), as stored in the stats npz. In channel
     mode (reduce=None) the per-channel variants drift_edges_ch etc. are used
     and all outputs keep the C dimension: cp_prob/cp_pos [B, C], *_cls
-    [B, C] long, spectral [B, C, 5].
+    [B, C] long, spectral [B, C, 5]. With vol_log=True the volatility label is
+    binned in log space (log(vol) with vol_log_edges), which spreads the
+    right-skewed raw vol distribution more evenly across bins. With
+    vol_ms=True an additional near-window volatility label 'vol_near_cls'
+    (diff std of the first k steps, binned with vol_near_edges) is returned.
     """
     channel_mode = reduce is None
     suffix = '_ch' if channel_mode else ''
@@ -122,11 +127,31 @@ def compute_descriptor_targets(future, k, stats, reduce='mean'):
     drift, vol, slope = mid_window_stats(future, reduce=reduce)
     spec = spectral_features(future, reduce=reduce)
     spec = (spec - stats['spec_mean' + suffix]) / (stats['spec_std' + suffix] + _EPS)
-    return {
+    vol_key = 'vol_log_edges' + suffix if vol_log else 'vol_edges' + suffix
+    vol_label = (vol + _EPS).log() if vol_log else vol
+    out = {
         'cp_prob': cp_prob,                                      # in (0, 1)
         'cp_pos': pos,                                           # in [0, 1]
         'drift_cls': torch.bucketize(drift, stats['drift_edges' + suffix]),  # long, 0..4
-        'vol_cls': torch.bucketize(vol, stats['vol_edges' + suffix]),        # long, 0..4
+        'vol_cls': torch.bucketize(vol_label, stats[vol_key]),               # long, 0..4
         'slope_cls': torch.bucketize(slope, stats['slope_edges' + suffix]),  # long, 0..4
         'spectral': spec,                                        # z-scored
     }
+    if vol_ms:
+        # multi-scale volatility: near-window (first k steps) diff std binned
+        # with its own train-quantile edges, alongside the full-window vol
+        vol_near = future[:, :max(min(k, future.shape[1]), 2), :].diff(dim=1).std(dim=1, unbiased=False)
+        if reduce == 'mean':
+            vol_near = vol_near.mean(dim=1)
+        out['vol_near_cls'] = torch.bucketize(vol_near, stats['vol_near_edges' + suffix])
+    if vol_qr:
+        # log-volatility regression target (continuous, replaces the binned CE)
+        out['vol_log'] = (vol + _EPS).log()
+    if level:
+        # future-window mean level regression target, z-scored with train stats;
+        # [B, C] channel mode (per-channel temporal mean) / [B] pooled
+        lv = future.mean(dim=1)
+        if reduce == 'mean':
+            lv = lv.mean(dim=1)
+        out['level'] = (lv - stats['level_mean' + suffix]) / (stats['level_std' + suffix] + _EPS)
+    return out

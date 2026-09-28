@@ -26,7 +26,7 @@ import os
 
 import numpy as np
 
-GIFT_ROOT = '" + os.environ.get("GIFT_ROOT", "data/gifteval") + "'
+GIFT_ROOT = '/mnt/jd/users/tengshiyuan.1/codes/non-stationary-ts/tsfm_missing/data/gifteval'
 MIN_INPUT_STD = 1e-6
 MIN_SERIES_FOR_SINGLE = 30
 MAX_WIN_PER_ITEM = 20

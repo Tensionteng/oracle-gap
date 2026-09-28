@@ -26,6 +26,9 @@ class DescriptorHead(nn.Module):
         self.cp_pos = nn.Linear(d_hidden, 1)
         self.drift = nn.Linear(d_hidden, n_bins)
         self.vol = nn.Linear(d_hidden, n_bins)
+        self.vol_near = nn.Linear(d_hidden, n_bins)   # multi-scale vol (--vol_ms)
+        self.vol_qr = nn.Linear(d_hidden, 1)          # log-vol regression (--vol_qr)
+        self.level = nn.Linear(d_hidden, 1)           # future-window mean level (--desc_level)
         self.slope = nn.Linear(d_hidden, n_bins)
         self.spectral = nn.Linear(d_hidden, 5)
 
@@ -38,6 +41,9 @@ class DescriptorHead(nn.Module):
             'cp_pos': self.cp_pos(h).squeeze(-1),
             'drift': self.drift(h),
             'vol': self.vol(h),
+            'vol_near': self.vol_near(h),
+            'vol_qr': self.vol_qr(h).squeeze(-1),
+            'level': self.level(h).squeeze(-1),
             'slope': self.slope(h),
             'spectral': self.spectral(h),
         }
@@ -69,6 +75,9 @@ class ChannelDescriptorHead(nn.Module):
             'cp_pos': out['cp_pos'].reshape(B, C),
             'drift': out['drift'].reshape(B, C, -1),
             'vol': out['vol'].reshape(B, C, -1),
+            'vol_near': out['vol_near'].reshape(B, C, -1),
+            'vol_qr': out['vol_qr'].reshape(B, C),
+            'level': out['level'].reshape(B, C),
             'slope': out['slope'].reshape(B, C, -1),
             'spectral': out['spectral'].reshape(B, C, -1),
         }

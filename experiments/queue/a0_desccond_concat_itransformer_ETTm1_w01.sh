@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd ${MTP4TS_ROOT}/Time-Series-Library
+cd /mnt/jd/users/tengshiyuan.1/codes/mtp4ts/Time-Series-Library
 uv run python -u run.py \
   --num_workers 2 \
   --task_name long_term_forecast \

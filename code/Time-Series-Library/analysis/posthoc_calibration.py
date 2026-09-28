@@ -27,7 +27,7 @@ import numpy as np
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-ROOT = os.environ.get('MTP4TS_ROOT', '.')
+ROOT = '/mnt/jd/users/tengshiyuan.1/codes/mtp4ts'
 TSLIB = os.path.join(ROOT, 'Time-Series-Library')
 
 CELLS = {
