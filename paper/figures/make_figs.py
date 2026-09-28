@@ -14,8 +14,15 @@ import os
 ROOT = os.environ.get('MTP4TS_ROOT', os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 OUT = os.path.join(ROOT, 'paper', 'figures')
 
+def _matrix_path():
+    for cand in (os.path.join(ROOT, 'results', 'matrix.csv'),
+                 os.path.join(ROOT, 'gapbench', 'results', 'matrix.csv')):
+        if os.path.exists(cand):
+            return cand
+    raise FileNotFoundError('matrix.csv not found under results/ or gapbench/results/')
+
 # ---------- fig_map ----------
-rows = list(csv.DictReader(open(os.path.join(ROOT, 'gapbench', 'results', 'matrix.csv'))))
+rows = list(csv.DictReader(open(_matrix_path())))
 models_order = ['bolt_tiny', 'bolt_mini', 'bolt_small', 'bolt_base', 'chronos2',
                 'sundial', 'timemoe_50m', 'timemoe_200m', 'timer_84m', 'tirex',
                 'moirai11_small', 'moirai11_large', 'moirai2_small', 'patchtst']
@@ -52,10 +59,21 @@ signals = [('pred_cp', 'Predicted change-point prob. (ours)', '#0072B2', '-'),
            ('ctx_vol', 'Context volatility (static)', '#D55E00', '-.'),
            ('random', 'Random ranking', '#999999', ':'),
            ('oracle_vol', 'Oracle volatility (upper bound)', '#000000', '-')]
-panels = [('ETTh1', os.path.join(ROOT, 'Time-Series-Library/analysis/results/errcorr_ETTh1_patch_descw01_curves.npz')),
-          ('ETTm1', os.path.join(ROOT, 'Time-Series-Library/analysis/results/errcorr_ETTm1_patch_descw01_curves.npz'))]
-bolt_json = [('Chronos-Bolt ft ETTh1', os.path.join(ROOT, 'tsfm_stage2/results/errcorr_bolt_ETTh1.json')),
-             ('Chronos-Bolt ft ETTm1', os.path.join(ROOT, 'tsfm_stage2/results/errcorr_bolt_ETTm1.json'))]
+def _resolve(*cands):
+    for cand in cands:
+        p = os.path.join(ROOT, cand)
+        if os.path.exists(p):
+            return p
+    raise FileNotFoundError(cands[0])
+
+panels = [('ETTh1', _resolve('Time-Series-Library/analysis/results/errcorr_ETTh1_patch_descw01_curves.npz',
+                            'results/analysis/errcorr_ETTh1_patch_descw01_curves.npz')),
+          ('ETTm1', _resolve('Time-Series-Library/analysis/results/errcorr_ETTm1_patch_descw01_curves.npz',
+                            'results/analysis/errcorr_ETTm1_patch_descw01_curves.npz'))]
+bolt_json = [('Chronos-Bolt ft ETTh1', _resolve('tsfm_stage2/results/errcorr_bolt_ETTh1.json',
+                                                'results/analysis/errcorr_bolt_ETTh1.json')),
+             ('Chronos-Bolt ft ETTm1', _resolve('tsfm_stage2/results/errcorr_bolt_ETTm1.json',
+                                                'results/analysis/errcorr_bolt_ETTm1.json'))]
 
 import json as _json
 fig, axes = plt.subplots(1, 3, figsize=(10.2, 2.2), sharey=True)

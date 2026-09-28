@@ -42,6 +42,9 @@ The gap is a property of the evaluated window set, not only of the dataset-model
 \paragraph{Anchor.}
 The context-mean anchor is used throughout. It coincides with the reference implemented by reversible instance normalization, which keeps the under-shoot region aligned with the shrinkage attractor of normalized models. A seasonal-naive anchor defines a different notion of shrinkage and is left to future work; Section~\ref{sec:regionfocal} shows the analogous choice inside the repair loss matters similarly (the seasonal anchor removes the benefit there).
 
+\paragraph{Consistency.}
+Under window-level exchangeability of residuals in the absence of leftover structure, the permutation estimate concentrates on the exchangeable signature as the number of windows grows, so the gap is a consistent test of residual non-exchangeability under that null.
+
 \paragraph{Variance of the estimator.}
 Write $a_i = \mathrm{std}(\hat{y}_i)/\mathrm{std}(\tilde{y}_i)$ for the per-window amplitude ratio of the model against a resampled realization and $b_i$ for the ratio against the true future. Treating the windows as independent, the gap estimator $\hat{g} = \bar{a} - \bar{b}$ has variance $\mathrm{Var}(\hat{g}) \le 2\sigma_a^2 / N$ up to window correlations, and $R$ bootstrap repetitions reduce the resampling contribution by a further factor of $R$. With $N \ge 500$ windows and the per-window dispersion $\sigma_a \approx 0.1$ observed in practice, the resulting ninety-five percent interval is at most $\pm 0.01$, consistent with the intervals below $\pm 0.005$ measured across the audit. The estimator is therefore precise enough to resolve gaps of order $0.01$, an order of magnitude smaller than the effects the law uses.
 
@@ -106,11 +109,11 @@ Table~\ref{tab:lagcells} records the boundary datasets, the context-predictabili
 \end{table}
 
 \paragraph{Decision-side probe across datasets.}
-Table~\ref{tab:decision} extends the selective-prediction probe of Section~\ref{sec:decision} beyond ETT, ranking test windows by each candidate signal and abstaining on the highest-risk quintile (coverage $0.8$). The descriptor head's best channel is worth deploying exactly where the free context-volatility ranking fails.
+Table~\ref{tab:decision} extends the selective-prediction probe of Section~\ref{sec:decision} beyond ETT, ranking test windows by each candidate signal and abstaining on the highest-risk quintile (coverage $0.8$). The descriptor head's best channel is worth deploying exactly where the free context-volatility ranking fails. The lower block repeats the probe on fine-tuned Chronos-Bolt-small: the same rule holds across backbones, and the winning channel per dataset matches the PatchTST rows.
 
 \begin{table}[h]
   \small
-  \caption{Selective prediction at coverage $0.8$ (PatchTST with descriptor head, $w{=}0.1$): remaining-MSE change when abstaining on the top-risk quintile by each ranking signal. The descriptor pays off exactly where context volatility cannot rank errors.}
+  \caption{Selective prediction at coverage $0.8$ (PatchTST with descriptor head, $w{=}0.1$; lower block: fine-tuned Chronos-Bolt-small): remaining-MSE change when abstaining on the top-risk quintile by each ranking signal. The descriptor pays off exactly where context volatility cannot rank errors, on both backbone families.}
   \label{tab:decision}
   \centering
   \begin{tabular}{lccccc}
@@ -122,6 +125,12 @@ Table~\ref{tab:decision} extends the selective-prediction probe of Section~\ref{
     Traffic & $+1.1\%$ & $\mathbf{-3.7\%}$ & $+3.2\%$ & $-6.3\%$ & descriptor \\
     Electricity & $-0.1\%$ & $-5.3\%$ & $-5.4\%$ & $-4.3\%$ & tie \\
     Weather & $+1.8\%$ & $-4.6\%$ & $\mathbf{-13.9\%}$ & $-22.7\%$ & context \\
+    \midrule
+    \multicolumn{6}{l}{\emph{Fine-tuned Chronos-Bolt-small}} \\
+    ETTh1 & $\mathbf{-3.6\%}$ & $+2.0\%$ & $-3.0\%$ & $-8.9\%$ & descriptor \\
+    ETTm1 & $\mathbf{-9.6\%}$ & $+2.5\%$ & $+1.3\%$ & $-7.5\%$ & descriptor \\
+    Traffic & $+1.6\%$ & $\mathbf{-3.2\%}$ & $+2.9\%$ & $-4.0\%$ & descriptor \\
+    Electricity & $-0.5\%$ & $+0.0\%$ & $\mathbf{-6.0\%}$ & $-4.3\%$ & context \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -179,7 +188,7 @@ Table~\ref{tab:ladder} aggregates the gap by model scale within three architectu
     \toprule
     Family & Parameters & Mean gap \\
     \midrule
-    Chronos-Bolt & 8M / 21M / 48M / 205M & $-0.025$ / $-0.027$ / $-0.022$ / $-0.026$ \\
+    Chronos-Bolt & 8M / 21M / 48M / 205M & $-0.025$ / $-0.027$ / $-0.026$ / $-0.026$ \\
     TimeMoE & 50M / 200M & $-0.017$ / $-0.016$ \\
     Moirai-1.1 & 14M / 311M & $-0.046$ / $-0.053$ \\
     \bottomrule

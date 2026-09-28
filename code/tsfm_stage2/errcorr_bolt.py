@@ -77,7 +77,7 @@ def main():
     from torch.utils.data import DataLoader
     loader = DataLoader(test_ds, batch_size=args.batch_size, shuffle=False,
                         num_workers=args.num_workers, drop_last=False)
-    sig_cp, ctx_vol, oracle_vol = [], [], []
+    sig_cp, sig_vol, ctx_vol, oracle_vol = [], [], [], []
     with torch.no_grad():
         for context, future in loader:
             B, L, C = context.shape
@@ -85,16 +85,20 @@ def main():
             _, aux = model_wrapper(ctx)
             cp = torch.sigmoid(aux['cp_prob']).reshape(B, C).mean(dim=1)
             sig_cp.append(cp.cpu().numpy())
+            vol_log = aux['vol'].reshape(B, C, -1)
+            vol_exp = (vol_log.softmax(-1) * torch.arange(vol_log.shape[-1], device=vol_log.device, dtype=vol_log.dtype)).sum(-1).mean(dim=1)
+            sig_vol.append(vol_exp.cpu().numpy())
             ctx_vol.append(context.diff(dim=1).std(dim=1).mean(dim=1).numpy())
             oracle_vol.append(future.diff(dim=1).std(dim=1).mean(dim=1).numpy())
     sig_cp = np.concatenate(sig_cp)
+    sig_vol = np.concatenate(sig_vol)
     ctx_vol = np.concatenate(ctx_vol)
     oracle_vol = np.concatenate(oracle_vol)
 
     from scipy.stats import spearmanr
     grid = np.round(np.arange(1.0, 0.499, -0.02), 2)
     rng = np.random.RandomState(2021)
-    signals = {'pred_cp': sig_cp, 'ctx_vol': ctx_vol, 'oracle_vol': oracle_vol}
+    signals = {'pred_cp': sig_cp, 'pred_vol': sig_vol, 'ctx_vol': ctx_vol, 'oracle_vol': oracle_vol}
     curves = {k: risk_coverage(err, v, grid) for k, v in signals.items()}
     curves['random'] = list(np.mean([risk_coverage(err, rng.permutation(len(err)).astype(float), grid)
                                      for _ in range(10)], axis=0))

@@ -1,16 +1,15 @@
 \section{The Two Components of Over-Smoothing}
 \label{sec:theory}
 
-\subsection{Setup}
-
+\paragraph{Setup.}
 Let $x \in \mathbb{R}^{L_0 \times C}$ be a context window and $y \in \mathbb{R}^{H \times C}$ the future window. A forecaster $\hat{y} = f(x)$ is trained with squared error. Decompose the future as
 \begin{equation}
     y = \mu(x) + \varepsilon, \qquad \mu(x) = \mathbb{E}[y \mid x],
     \label{eq:decomp}
 \end{equation}
-where $\varepsilon$ is unpredictable from the context, with $\mathbb{E}[\varepsilon \mid x] = 0$ and conditional covariance $\Sigma(x)$. The population-optimal forecast under squared error is $\hat{y}^\star = \mu(x)$.
+where $\varepsilon$ is unpredictable from the context, with $\mathbb{E}[\varepsilon \mid x] = 0$ and conditional covariance $\Sigma(x)$. The population-optimal forecast under squared error is thus $\hat{y}^\star = \mu(x)$.
 
-\subsection{The optimal predictor already looks over-smoothed}
+\paragraph{The optimal predictor already looks over-smoothed.}
 
 Fix a level reference $m$ from the context, for example the per-channel context mean. A prediction point \emph{under-shoots} when $\hat{y}$ lies strictly between $m$ and $y$; dispersion is measured by the amplitude ratio $\mathrm{std}(\hat{y}) / \mathrm{std}(y)$.
 
@@ -20,12 +19,12 @@ Under \eqref{eq:decomp}, the Bayes-optimal forecast satisfies
 \begin{equation}
     \mathbb{E}\|\hat{y}^\star - m\|^2 = \mathbb{E}\|y - m\|^2 - \mathrm{tr}\,\Sigma(x) \; < \; \mathbb{E}\|y - m\|^2
 \end{equation}
-whenever $\mathrm{tr}\,\Sigma(x) > 0$. Hence $\mathrm{std}(\hat{y}^\star) / \mathrm{std}(y) \le \sqrt{1 - \bar{\sigma}^2 / \mathrm{Var}(y)}$, where $\bar{\sigma}^2$ is the mean conditional noise variance. When unpredictable noise is present, the optimal forecast has strictly smaller amplitude than the realized series, and its under-shoot rate is a property of the oracle, not a symptom of model failure.
+whenever $\mathrm{tr}\,\Sigma(x) > 0$. Hence $\mathrm{std}(\hat{y}^\star) / \mathrm{std}(y) \le \sqrt{1 - \bar{\sigma}^2 / \mathrm{Var}(y)}$ with $\bar{\sigma}^2$ the mean conditional noise variance: when unpredictable noise is present, the optimal forecast has strictly smaller amplitude than the realized series, and under-shooting is a property of the oracle, not a symptom of model failure.
 \end{proposition}
 
-The practical content is a warning: comparing a trained forecast with realized series will always find under-shooting, even for the optimal model. Over-smoothing claims require a reference for how smooth an oracle \emph{would} look on the same data; Section~\ref{sec:diagnostic} constructs one by simulation.
+The practical content is a warning: comparing a trained forecast with realized series will always find under-shooting, even for the optimal model. Over-smoothing claims require a reference for how smooth an oracle \emph{would} look on the same data; Section~\ref{sec:diagnostic} constructs one by simulation. The accuracy--realism trade-off behind the observation is formalized in generality by \citet{green2026expectations}; our use of it is different: rather than mapping the trade-off, we measure how much of the realized amplitude a trained model fails to exploit.
 
-\subsection{Rational shrinkage versus unexploited structure}
+\paragraph{Rational shrinkage versus unexploited structure.}
 
 Write the model's conditional bias as $b(x) = \mu(x) - \mathbb{E}[\hat{y} \mid x]$. The model exhibits \emph{rational shrinkage} where $b(x) \approx 0$ yet its amplitude ratio is below one, and \emph{unexploited structure} where $b(x)$ correlates with predictable structure in $y$, such as regime changes visible in the context.
 
@@ -39,22 +38,21 @@ Let $\hat{y}_\delta = \hat{y} + \delta(x)$ add a deterministic counter-bias of m
 is strictly negative whenever $0 < |\delta| < 2|b| \cos\theta$, where $\theta$ is the angle between correction and bias. The optimal correction $\delta^\star = b$ removes the shrinkage bias exactly.
 \end{proposition}
 
-Equation~\eqref{eq:counterbias} separates three regimes. When $b$ is large and aligned with the correction, a positive interval of beneficial strengths exists. When $b \approx 0$, any correction costs $|\delta|^2$. When the correction is misaligned with the bias, for example when a channel-mixing architecture rotates the correction in function space, only the cost remains. All three regimes appear in our experiments, and the oracle gap identifies the first in advance.
+Equation~\eqref{eq:counterbias} separates three regimes: aligned bias admits a positive interval of beneficial strengths; $b \approx 0$ makes any correction cost $|\delta|^2$; and a misaligned correction, for example when a channel-mixing architecture rotates it in function space, leaves only the cost. All three regimes appear in our experiments, and the oracle gap identifies the first in advance.
 
-\subsection{Why structure belongs in auxiliary heads, not on the output}
+\paragraph{Why structure belongs in auxiliary heads, not on the output.}
 
 Requiring the forecast to match structural descriptors of the realized future, such as volatility or spectral entropy, is tempting. For linear descriptors $D$ such as trend slope, $D(\mathbb{E}[y \mid x]) = \mathbb{E}[D(y) \mid x]$, so matching is compatible with the conditional mean. For nonlinear descriptors, Jensen's inequality gives $D(\mathbb{E}[y \mid x]) \neq \mathbb{E}[D(y) \mid x]$ in general, and matching realized values on the output pulls the forecast away from the conditional mean exactly where the descriptor is informative. Supervising structure through an auxiliary head keeps the main output's optimum intact while shaping the shared representation.
-
 \begin{remark}[No free reweighting]
 \label{rem:impossible}
 Any per-point weight $w(\hat{y}, y)$ correlated with the residual $y - \mu(x)$ moves the population minimizer away from $\mu(x)$, while a weight uncorrelated with the residual cannot target under-dispersion. The choice is between a controlled bias and none; we make the controlled bias explicit and bounded in Section~\ref{sec:regionfocal}.
 \end{remark}
 
-\subsection{A Gaussian fixed-point analysis}
+\paragraph{A Gaussian fixed-point analysis.}
 
 Let $y \mid x \sim \mathcal{N}(\mu, \sigma^2)$, anchor $m < \mu$, and consider $\mathbb{E}[(1 + \alpha\,\mathbf{1}[y > c])(c - y)^2]$ over a constant prediction $c$. The fixed point satisfies
 \begin{equation}
     c^\star = \mu + \frac{\alpha\,\sigma\,\varphi(0)}{1 + \alpha / 2} + O(\alpha^2) \;\approx\; \mu + \frac{0.4\,\alpha\,\sigma}{1 + \alpha/2},
     \label{eq:fixedpoint}
 \end{equation}
-so the counter-bias moves the optimum away from the anchor by an amount proportional to $\alpha\sigma$ with bounded slope. When the anchor coincides with $\mu$, the objective develops two symmetric minima flanking it, so the anchor also controls the correction's symmetry. Derivations are in Appendix~\ref{app:proofs}.
+so the counter-bias moves the optimum away from the anchor by an amount proportional to $\alpha\sigma$ with bounded slope. When the anchor coincides with $\mu$, the objective develops two symmetric minima flanking it, so the anchor also controls the correction's symmetry (derivations in Appendix~\ref{app:proofs}).

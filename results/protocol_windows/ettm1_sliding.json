@@ -1,0 +1,10 @@
+{
+ "dataset": "ETTM1",
+ "protocol": "sliding (TSLib test split)",
+ "estimator": "oracle_diagnostic.py (global z-norm, ctxmean anchor, reps=20)",
+ "gap_by_seed": {
+  "2021": -0.023,
+  "2022": -0.016,
+  "2023": -0.019
+ }
+}

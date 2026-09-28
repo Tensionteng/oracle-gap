@@ -5,9 +5,9 @@
 Point forecasts trained with MSE are systematically smoother than the series they predict. This repository shows that such over-smoothing has two components: **rational shrinkage** (the optimal response to uncertainty, which no method should remove) and **unexploited structure** (which is repairable). We provide:
 
 - **The oracle gap** — a training-free diagnostic that measures how much repairable structure a dataset-model pair leaves behind;
-- **The law** — across 678 dataset-model cells (13 task-model cells + a 665-cell audit of 13 foundation models on 50 GIFT-Eval variants), the sign of the oracle gap predicts the sign of every anti-smoothing intervention we tested, without contradiction;
-- **RegionFocal** — a region-weighted loss that repairs over-smoothing where the gap is positive (Electricity: −2.3% MSE across 3 seeds and 4 horizons) and degrades gracefully to MSE where it is not;
-- **Descriptor-driven selective prediction** — a light auxiliary head whose predicted change-point probability ranks forecast risk better than oracle change-point labels and static baselines (up to −5.3% remaining MSE when abstaining on the top 20%).
+- **The law** — across 15 distinct intervention cells (nine datasets, six backbones), the sign of the oracle gap predicts the direction of the repair's effect in 14 cells (the single exception is diagnosable in advance from prediction geometry), corroborated by a 665-cell audit of thirteen foundation models and a trained PatchTST on 50 GIFT-Eval variants. A cross-intervention check with FreDF sharpens the law: the negative direction transfers across intervention families (where no repairable structure remains, dispersion-targeting objectives hurt regardless of mechanism), while the positive direction is mechanism-specific (a positive gap certifies headroom; bounded counter-bias repairs exploit it);
+- **RegionFocal** — a region-weighted loss that repairs over-smoothing where the gap is positive (Electricity: −2.3% MSE across 3 seeds and 4 horizons) and is withheld where the gap is non-positive, avoiding the harm it would otherwise cause;
+- **Descriptor-driven selective prediction** — a light auxiliary head whose predicted change-point probability ranks forecast risk better than oracle change-point labels and static baselines (up to −5.3% remaining MSE when abstaining on the top 20%; −9.6% on a fine-tuned Chronos-Bolt). The deploy-where-risk-is-forward-looking rule holds across backbone families (PatchTST and fine-tuned Chronos-Bolt, Table `tab:decision`).
 
 ## Repository structure
 
@@ -46,9 +46,11 @@ results/
 
 ## Key experiment artifacts
 
-- `results/matrix.csv` — 665-cell oracle-gap matrix (13 foundation models × 50 GIFT-Eval variants), with bootstrap confidence intervals.
-- `experiments/results.csv` — 200+ task-model runs: baselines, descriptor-head variants, RegionFocal dose-response, backbones × datasets.
-- `ccfa-review-reports/` (if present) — internal review and integrity-audit records.
+- `results/matrix.csv` — 665-cell oracle-gap matrix (13 foundation models × 50 GIFT-Eval variants + a trained PatchTST), with bootstrap confidence intervals.
+- `results/protocol_windows/` — oracle gap under sliding vs tail window protocols (incl. ETTh1/ETTm1 sliding, the protocol FreDF was published in).
+- `results/analysis/errcorr_bolt_{ETTh1,ETTm1,ECL,traffic}.json` — selective-prediction probe on fine-tuned Chronos-Bolt (risk-coverage by descriptor change-point / volatility / context-volatility / oracle rankings).
+- `experiments/results.csv` — 200+ task-model runs: baselines, descriptor-head variants, RegionFocal dose-response, backbones × datasets, and the FreDF cross-intervention check (`f0_fredf_*`, `32_fredf_*` jobs).
+- `experiments/staged_x/README.md` — pre-registered predictions and outcome of the decision-side TSFM transfer runs (`x0`–`x3`).
 
 ## Notes
 
